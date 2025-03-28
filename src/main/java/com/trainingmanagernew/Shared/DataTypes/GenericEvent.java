@@ -1,4 +1,4 @@
-package com.trainingmanagernew.SharedDataTypes;
+package com.trainingmanagernew.Shared.DataTypes;
 
 import org.springframework.context.ApplicationEvent;
 

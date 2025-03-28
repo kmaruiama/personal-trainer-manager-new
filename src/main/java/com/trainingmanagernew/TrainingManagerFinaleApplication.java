@@ -1,6 +1,6 @@
 package com.trainingmanagernew;
 
-import com.trainingmanagernew.Security.Config.RsaKeyProperties;
+import com.trainingmanagernew.SecurityModule.Config.RsaKeyProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

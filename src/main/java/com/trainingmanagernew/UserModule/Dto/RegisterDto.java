@@ -2,7 +2,7 @@ package com.trainingmanagernew.UserModule.Dto;
 
 import java.time.LocalDate;
 
-import com.trainingmanagernew.UserModule.Dto.validation.EnforceBornAfterCertainPeriod;
+import com.trainingmanagernew.Shared.Validators.EnforceBornAfterCertainPeriod;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.Email;

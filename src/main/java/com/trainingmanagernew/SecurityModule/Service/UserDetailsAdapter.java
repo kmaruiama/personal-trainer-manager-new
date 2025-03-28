@@ -1,4 +1,4 @@
-package com.trainingmanagernew.Security.Service;
+package com.trainingmanagernew.SecurityModule.Service;
 
 import com.trainingmanagernew.UserModule.Entity.UserEntity;
 import org.springframework.security.core.GrantedAuthority;

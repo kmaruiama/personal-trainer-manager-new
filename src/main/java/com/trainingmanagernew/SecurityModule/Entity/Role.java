@@ -1,24 +1,22 @@
-package com.trainingmanagernew.Security.Entity;
+package com.trainingmanagernew.SecurityModule.Entity;
 
 import jakarta.persistence.*;
-
-import java.util.UUID;
 
 @Entity
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 
-    private UUID id;
+    private Long id;
 
     @Column(unique = true, nullable = false)
     private String name;
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -1,4 +1,4 @@
-package com.trainingmanagernew.Security.Config;
+package com.trainingmanagernew.SecurityModule.Config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

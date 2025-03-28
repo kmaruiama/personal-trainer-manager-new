@@ -1,6 +1,6 @@
 package com.trainingmanagernew.UserModule;
 
-import com.trainingmanagernew.SharedDataTypes.GenericEvent;
+import com.trainingmanagernew.Shared.DataTypes.GenericEvent;
 import com.trainingmanagernew.UserModule.Dto.RegisterDto;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
@@ -16,11 +16,15 @@ public class UserEventEmitter {
     }
 
     public void newUserRegistered(UUID userId, RegisterDto registerDto) {
-        eventPublisher.publishEvent(new GenericEvent<>(this, "USER-REGISTERED", userId, registerDto));
+        eventPublisher.publishEvent(new GenericEvent<>(this, "USER-REGISTERED-TRANSIENT", userId, registerDto));
     }
 
     public void userDeleted(UUID userId){
         eventPublisher.publishEvent(new GenericEvent<>(this, "OBLITERATE", userId, null));
+    }
+
+    public void sucessfulRegistration(UUID userId){
+        eventPublisher.publishEvent(new GenericEvent<>(this, "USER-REGISTERED-COMPLETE", userId, null));
     }
 }
 

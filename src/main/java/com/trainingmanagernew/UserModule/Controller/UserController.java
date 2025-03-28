@@ -39,10 +39,4 @@ public class UserController {
                 .body(Map.of("message", "Usuário deletado com sucesso."));
     }
 
-    @GetMapping
-    public String hello (){
-        return "hello";
-    }
-
-
 }

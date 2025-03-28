@@ -1,6 +1,6 @@
 package com.trainingmanagernew.TrainerModule.Dto;
 
-import com.trainingmanagernew.UserModule.Dto.validation.EnforceBornAfterCertainPeriod;
+import com.trainingmanagernew.Shared.Validators.EnforceBornAfterCertainPeriod;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;

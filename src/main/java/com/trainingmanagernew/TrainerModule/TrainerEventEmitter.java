@@ -1,6 +1,6 @@
 package com.trainingmanagernew.TrainerModule;
 
-import com.trainingmanagernew.SharedDataTypes.GenericEvent;
+import com.trainingmanagernew.Shared.DataTypes.GenericEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 

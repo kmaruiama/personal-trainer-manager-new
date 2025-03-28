@@ -1,4 +1,4 @@
-package com.trainingmanagernew.UserModule.Dto.validation;
+package com.trainingmanagernew.Shared.Validators;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

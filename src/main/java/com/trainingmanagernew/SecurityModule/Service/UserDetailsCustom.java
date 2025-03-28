@@ -1,6 +1,6 @@
-package com.trainingmanagernew.Security.Service;
+package com.trainingmanagernew.SecurityModule.Service;
 
-import com.trainingmanagernew.Security.Exception.SecurityCustomExceptions;
+import com.trainingmanagernew.SecurityModule.Exception.SecurityCustomExceptions;
 import com.trainingmanagernew.UserModule.Entity.UserEntity;
 import com.trainingmanagernew.UserModule.Repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
