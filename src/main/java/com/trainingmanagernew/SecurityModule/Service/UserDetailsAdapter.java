@@ -7,17 +7,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class UserDetailsAdapter implements UserDetails {
 
     private final String username;
     private final String password;
+    private final UUID uuid;
     private final Set<GrantedAuthority> authorities;
 
     public UserDetailsAdapter(UserEntity user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
+        this.uuid = user.getId();
         this.authorities = user.getAuthorities().stream()
                 .map(role -> new SimpleGrantedAuthority(role.getAuthority()))
                 .collect(Collectors.toSet());
@@ -56,5 +59,9 @@ public class UserDetailsAdapter implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public UUID getUuid() {
+        return uuid;
     }
 }

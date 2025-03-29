@@ -3,6 +3,7 @@ package com.trainingmanagernew.TrainerModule.Service.Register;
 import com.trainingmanagernew.TrainerModule.Dto.TrainerDto;
 import com.trainingmanagernew.TrainerModule.Entity.TrainerEntity;
 import com.trainingmanagernew.TrainerModule.Repository.TrainerRepository;
+import com.trainingmanagernew.TrainerModule.TrainerEventEmitter;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -10,10 +11,12 @@ public class RegisterNewTrainerService {
 
     private final TrainerRepository trainerRepository;
     private final NewTrainerValidatorService newTrainerValidatorService;
+    private final TrainerEventEmitter trainerEventEmitter;
 
-    RegisterNewTrainerService(TrainerRepository trainerRepository, NewTrainerValidatorService newTrainerValidatorService){
+    RegisterNewTrainerService(TrainerRepository trainerRepository, NewTrainerValidatorService newTrainerValidatorService, TrainerEventEmitter trainerEventEmitter){
         this.trainerRepository = trainerRepository;
         this.newTrainerValidatorService = newTrainerValidatorService;
+        this.trainerEventEmitter = trainerEventEmitter;
     }
 
     public void register(TrainerDto trainerDto){
@@ -25,5 +28,6 @@ public class RegisterNewTrainerService {
         trainerEntity.setBirthDate(trainerDto.getBirth());
         trainerEntity.setOwnerId(trainerDto.getUserId());
         trainerRepository.save(trainerEntity);
+        trainerEventEmitter.successfulTrainerRegistration(trainerDto.getUserId());
     }
 }

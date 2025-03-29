@@ -26,15 +26,18 @@ public class TokenService {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(" "));
 
+        UserDetailsAdapter userDetailsAdapter = (UserDetailsAdapter) authentication.getPrincipal();
+        String uuid = userDetailsAdapter.getUuid().toString();
+
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("self")
                 .issuedAt(now)
                 .expiresAt(now.plus(1, ChronoUnit.HOURS))
                 .subject(authentication.getName())
                 .claim("authorities", authorities)
+                .claim("uuid", uuid)
                 .build();
 
-        System.out.println(authorities);
         return "Bearer " + this.jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 

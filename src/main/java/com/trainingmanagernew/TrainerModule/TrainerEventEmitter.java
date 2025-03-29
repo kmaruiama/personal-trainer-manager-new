@@ -17,4 +17,8 @@ public class TrainerEventEmitter {
     public void unsuccessfulTrainerRegistration(UUID userId){
         eventPublisher.publishEvent(new GenericEvent<>(this, "UNSUCCESSFUL-TRAINER-REGISTRATION", userId, null));
     }
+
+    public void successfulTrainerRegistration(UUID userId){
+        eventPublisher.publishEvent(new GenericEvent<>(this, "SUCCESSFUL-TRAINER-REGISTRATION", userId, null));
+    }
 }

@@ -11,26 +11,26 @@ import java.time.LocalDate;
 
 public class CustomerInfoDto {
     @Size(min = 1, max = 100, message = "O nome deve ter entre 1 e 100 caracteres.")
-    private String nome;
+    private String name;
 
     @NotNull
     @Past
     @EnforceBornAfterCertainPeriod
-    private LocalDate dataNascimento;
+    private LocalDate birthDate;
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public LocalDate getDataNascimento() {
-        return dataNascimento;
+    public LocalDate getBirthDate() {
+        return birthDate;
     }
 
-    public void setDataNascimento(LocalDate dataNascimento) {
-        this.dataNascimento = dataNascimento;
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 }

@@ -13,24 +13,24 @@ public class CustomerEntityOwner {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID localOwnerId;
+    private UUID id;
 
-    @OneToMany(mappedBy = "localOwnerId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "localOwner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CustomerEntity> customerEntityList = new ArrayList<>();
 
     public UUID getOwnerId() {
         return ownerId;
     }
 
-    public UUID getLocalOwnerId() {
-        return localOwnerId;
-    }
-
-    public void setLocalOwnerId(UUID localOwnerId) {
-        this.localOwnerId = localOwnerId;
-    }
-
     public void setOwnerId(UUID ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 }

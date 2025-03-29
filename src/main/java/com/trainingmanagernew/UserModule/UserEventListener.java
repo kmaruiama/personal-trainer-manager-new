@@ -8,12 +8,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserEventListener {
-    private final DeleteUserService deleteUserService;
+
     private final RollbackDeleteUserService rollbackDeleteUserService;
     private final UserEventEmitter userEventEmitter;
 
-    public UserEventListener(DeleteUserService deleteUserService, RollbackDeleteUserService rollbackDeleteUserService, UserEventEmitter userEventEmitter) {
-        this.deleteUserService = deleteUserService;
+    public UserEventListener(RollbackDeleteUserService rollbackDeleteUserService, UserEventEmitter userEventEmitter) {
         this.rollbackDeleteUserService = rollbackDeleteUserService;
         this.userEventEmitter = userEventEmitter;
     }
@@ -26,7 +25,7 @@ public class UserEventListener {
                 rollbackDeleteUserService.delete(event.getUserId());
                 break;
             case "SUCCESSFUL-TRAINER-REGISTRATION":
-                userEventEmitter.sucessfulRegistration(event.getUserId());
+                userEventEmitter.successfulRegistration(event.getUserId());
         }
     }
 }

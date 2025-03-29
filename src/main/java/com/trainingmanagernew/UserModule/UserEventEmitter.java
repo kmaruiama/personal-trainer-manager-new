@@ -23,7 +23,7 @@ public class UserEventEmitter {
         eventPublisher.publishEvent(new GenericEvent<>(this, "OBLITERATE", userId, null));
     }
 
-    public void sucessfulRegistration(UUID userId){
+    public void successfulRegistration(UUID userId){
         eventPublisher.publishEvent(new GenericEvent<>(this, "USER-REGISTERED-COMPLETE", userId, null));
     }
 }

@@ -1,6 +1,5 @@
 package com.trainingmanagernew.UserModule.Controller;
 
-
 import com.trainingmanagernew.UserModule.Dto.RegisterDto;
 import com.trainingmanagernew.UserModule.Service.Delete.DeleteUserService;
 import com.trainingmanagernew.UserModule.Service.Register.RegisterNewUserService;
