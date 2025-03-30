@@ -1,8 +1,12 @@
 package com.trainingmanagernew.SecurityModule.Dto;
 
 
+import jakarta.validation.constraints.NotNull;
+
 public class LoginDto {
+    @NotNull
     private String username;
+    @NotNull
     private String password;
 
     public String getUsername() {

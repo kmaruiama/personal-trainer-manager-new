@@ -10,17 +10,17 @@ import org.springframework.stereotype.Service;
 public class RegisterNewTrainerService {
 
     private final TrainerRepository trainerRepository;
-    private final NewTrainerValidatorService newTrainerValidatorService;
+    private final NewTrainerValidationService newTrainerValidationService;
     private final TrainerEventEmitter trainerEventEmitter;
 
-    RegisterNewTrainerService(TrainerRepository trainerRepository, NewTrainerValidatorService newTrainerValidatorService, TrainerEventEmitter trainerEventEmitter){
+    RegisterNewTrainerService(TrainerRepository trainerRepository, NewTrainerValidationService newTrainerValidatorService, TrainerEventEmitter trainerEventEmitter){
         this.trainerRepository = trainerRepository;
-        this.newTrainerValidatorService = newTrainerValidatorService;
+        this.newTrainerValidationService = newTrainerValidatorService;
         this.trainerEventEmitter = trainerEventEmitter;
     }
 
     public void register(TrainerDto trainerDto){
-        newTrainerValidatorService.validate(trainerDto);
+        newTrainerValidationService.validate(trainerDto);
         TrainerEntity trainerEntity = new TrainerEntity();
         trainerEntity.setAddress(trainerDto.getAddress());
         trainerEntity.setCpf(trainerDto.getCpf());

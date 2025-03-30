@@ -2,6 +2,7 @@ package com.trainingmanagernew.UserModule.Entity;
 
 import com.trainingmanagernew.SecurityModule.Entity.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -13,18 +14,32 @@ import java.util.stream.Collectors;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-
     @Column(nullable = false, unique = true)
     private UUID id;
 
+    @NotNull(message = "O nome de usuário não pode ser nulo.")
+    @NotBlank(message = "O nome de usuário não pode estar vazio.")
+    @Size(min = 3, max = 50, message = "O nome de usuário deve ter entre 3 e 50 caracteres.")
     @Column(nullable = false, unique = true)
     private String username;
 
+    @NotNull(message = "A senha não pode ser nula.")
+    @NotBlank(message = "A senha não pode estar vazia.")
     @Column(nullable = false)
     private String password;
 
+    @NotNull(message = "O e-mail não pode ser nulo.")
+    @NotBlank(message = "O e-mail não pode estar vazio")
+    @Email(message = "O e-mail deve ser válido.")
     @Column(nullable = false, unique = true)
     private String email;
+
+    @NotNull(message = "O número não pode ser nulo.")
+    @NotBlank(message = "O número não pode estar vazio")
+    @Column(nullable = false, unique = true)
+    @Size(min = 10, max = 15, message = "Inclua o DDD / O número deve ter entre 10 e 15 caracteres")
+    @Pattern(regexp = "\\d+", message = "O número deve conter apenas dígitos")
+    private String number;
 
     private Long trainerOwnedId;
 
@@ -34,7 +49,7 @@ public class UserEntity {
 
     private Long paymentOwnedId;
 
-    @ManyToMany(fetch = FetchType.EAGER) // Carrega as roles automaticamente
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
@@ -86,5 +101,14 @@ public class UserEntity {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
 
 }

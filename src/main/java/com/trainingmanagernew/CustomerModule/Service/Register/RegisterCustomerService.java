@@ -1,4 +1,4 @@
-package com.trainingmanagernew.CustomerModule.Service;
+package com.trainingmanagernew.CustomerModule.Service.Register;
 
 import com.trainingmanagernew.CustomerModule.Dto.CustomerInfoDto;
 import com.trainingmanagernew.CustomerModule.Entity.CustomerEntity;

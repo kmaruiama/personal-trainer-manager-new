@@ -1,7 +1,8 @@
 package com.trainingmanagernew.TrainerModule;
 import com.trainingmanagernew.TrainerModule.Dto.TrainerDto;
 import com.trainingmanagernew.TrainerModule.Service.Delete.DeleteTrainerService;
-import com.trainingmanagernew.TrainerModule.Service.Register.RegisterDtoConversor;
+import com.trainingmanagernew.TrainerModule.Service.Register.RegisterDtoConversion;
+import com.trainingmanagernew.TrainerModule.Service.Register.RegisterDtoConversionImpl;
 import com.trainingmanagernew.TrainerModule.Service.Register.RegisterNewTrainerService;
 import com.trainingmanagernew.Shared.DataTypes.GenericEvent;
 import com.trainingmanagernew.UserModule.Dto.RegisterDto;
@@ -12,13 +13,13 @@ import org.springframework.stereotype.Component;
 public class TrainerEventListener {
 
     private final RegisterNewTrainerService registerNewTrainerService;
-    private final RegisterDtoConversor registerDtoConversor;
     private final DeleteTrainerService deleteTrainerService;
+    private final RegisterDtoConversion registerDtoConversion;
 
-    TrainerEventListener(RegisterNewTrainerService registerNewTrainerService, RegisterDtoConversor registerDtoConversor, DeleteTrainerService deleteTrainerService){
+    TrainerEventListener(RegisterNewTrainerService registerNewTrainerService, DeleteTrainerService deleteTrainerService, RegisterDtoConversion registerDtoConversion){
         this.registerNewTrainerService = registerNewTrainerService;
-        this.registerDtoConversor = registerDtoConversor;
         this.deleteTrainerService = deleteTrainerService;
+        this.registerDtoConversion = registerDtoConversion;
     }
 
     @EventListener
@@ -26,7 +27,7 @@ public class TrainerEventListener {
         switch (event.getEventType()){
             case "USER-REGISTERED-TRANSIENT":
                 RegisterDto registerDto = (RegisterDto) event.getEventData();
-                TrainerDto trainerDto = registerDtoConversor.convert(registerDto, event.getUserId());
+                TrainerDto trainerDto = registerDtoConversion.convert(registerDto, event.getUserId());
                 /*A partir desse ponto, nao fico mais dependente de qualquer
                   tipo de dado vindo de outro módulo */
                 registerNewTrainerService.register(trainerDto);

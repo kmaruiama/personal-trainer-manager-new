@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.UUID;
 
 @Component
-public class RegisterDtoConversor implements RegisterDtoConversion {
+public class RegisterDtoConversionImpl implements RegisterDtoConversion {
     @Override
     public TrainerDto convert(RegisterDto registerDto, UUID userId) {
         TrainerDto trainerDto = new TrainerDto();

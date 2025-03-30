@@ -2,10 +2,12 @@ package com.trainingmanagernew.SecurityModule.Controller;
 
 import com.trainingmanagernew.SecurityModule.Dto.LoginDto;
 import com.trainingmanagernew.SecurityModule.Service.LoginAuthenticationService;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/auth")
+@Validated
 public class AuthController {
 
     private final LoginAuthenticationService loginAuthenticationService;
@@ -19,10 +21,4 @@ public class AuthController {
     public String token (@RequestBody LoginDto loginDto){
        return loginAuthenticationService.returnTokenIfLoginIsValid(loginDto);
     }
-
-    @GetMapping
-    public String testingTokenValidation(@RequestHeader("Authorization") String authHeader){
-        return "AIII";
-    }
-
 }

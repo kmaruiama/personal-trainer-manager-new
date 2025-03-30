@@ -3,10 +3,11 @@ package com.trainingmanagernew.CustomerModule.Controller;
 import com.trainingmanagernew.CustomerModule.Dto.CustomerGetDto;
 import com.trainingmanagernew.CustomerModule.Dto.CustomerInfoDto;
 import com.trainingmanagernew.CustomerModule.Service.Get.ReturnCustomerService;
-import com.trainingmanagernew.CustomerModule.Service.Get.ReturnCustomerServiceImpl;
-import com.trainingmanagernew.CustomerModule.Service.RegisterCustomerService;
+import com.trainingmanagernew.CustomerModule.Service.Register.RegisterCustomerService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("api/customer")
+@Validated
 public class CustomerController {
 
     private final RegisterCustomerService registerCustomerService;
@@ -26,7 +28,7 @@ public class CustomerController {
     }
 
     @PostMapping("/register")
-    ResponseEntity<Map<String, String>> registerNewCustomer (@RequestBody CustomerInfoDto customerInfoDto,
+    ResponseEntity<Map<String, String>> registerNewCustomer (@Valid @RequestBody CustomerInfoDto customerInfoDto,
                                                              @RequestHeader("Authorization") String authHeader){
         registerCustomerService.register(customerInfoDto, authHeader);
         return ResponseEntity.status(HttpStatus.OK)

@@ -1,7 +1,7 @@
 package com.trainingmanagernew.CustomerModule;
 
 import com.trainingmanagernew.CustomerModule.Service.DeleteCustomerOwnerService;
-import com.trainingmanagernew.CustomerModule.Service.RegisterCustomerOwnerService;
+import com.trainingmanagernew.CustomerModule.Service.Register.RegisterCustomerOwnerService;
 import com.trainingmanagernew.Shared.DataTypes.GenericEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;

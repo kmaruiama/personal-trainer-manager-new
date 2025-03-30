@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 import java.util.UUID;
 
 @Component
-public class NewTrainerValidatorService implements NewTrainerValidation {
+public class NewTrainerValidatorServiceImpl implements NewTrainerValidationService {
     private final TrainerRepository trainerRepository;
     private final TrainerEventEmitter trainerEventEmitter;
     private UUID userId = null;
 
-    NewTrainerValidatorService(TrainerRepository trainerRepository, TrainerEventEmitter trainerEventEmitter){
+    NewTrainerValidatorServiceImpl(TrainerRepository trainerRepository, TrainerEventEmitter trainerEventEmitter){
         this.trainerRepository = trainerRepository;
         this.trainerEventEmitter = trainerEventEmitter;
     }
@@ -27,6 +27,7 @@ public class NewTrainerValidatorService implements NewTrainerValidation {
         }
     }
 
+    @Override
     public void validate(TrainerDto trainerDto){
         this.userId = trainerDto.getUserId();
         checkCpfUnique(trainerDto.getCpf());
