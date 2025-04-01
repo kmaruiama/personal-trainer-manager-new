@@ -1,5 +1,6 @@
 package com.trainingmanagernew.BodyModule.Service.Get;
 
+import com.trainingmanagernew.BodyModule.Aspect.AuthorizeBodyModuleRequest;
 import com.trainingmanagernew.BodyModule.Dto.BodyGetDto;
 import com.trainingmanagernew.BodyModule.Entity.BodyEntity;
 import com.trainingmanagernew.BodyModule.Entity.BodyOwnerEntity;
@@ -23,6 +24,7 @@ public class GetAllEntitiesByIdImpl implements GetAllBodyEntitiesById {
         this.bodyOwnerEntityRepository = bodyOwnerEntityRepository;
     }
 
+    @AuthorizeBodyModuleRequest
     @Override
     public List<BodyGetDto> get(UUID id) {
         BodyOwnerEntity bodyOwnerEntity = initializeBodyOwnerEntity(id);

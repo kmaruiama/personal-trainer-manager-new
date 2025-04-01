@@ -1,5 +1,6 @@
 package com.trainingmanagernew.BodyModule.Service.Put;
 
+import com.trainingmanagernew.BodyModule.Aspect.AuthorizeBodyModuleRequest;
 import com.trainingmanagernew.BodyModule.Dto.BodyPostDto;
 import com.trainingmanagernew.BodyModule.Entity.BodyEntity;
 import com.trainingmanagernew.BodyModule.Exception.BodyCustomExceptions;
@@ -17,6 +18,7 @@ public class EditBodyEntityServiceImpl implements EditBodyEntityService{
         this.bodyEntityRepository = bodyEntityRepository;
     }
 
+    @AuthorizeBodyModuleRequest
     @Transactional
     @Override
     public void edit(BodyPostDto bodyPostDto) {

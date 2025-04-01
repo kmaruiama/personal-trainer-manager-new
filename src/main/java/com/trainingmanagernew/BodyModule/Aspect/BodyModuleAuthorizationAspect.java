@@ -38,7 +38,7 @@ public class BodyModuleAuthorizationAspect {
 
     @Before(value = "@annotation(AuthorizeBodyModuleRequest)")
     public void validateRequestAuthorization(JoinPoint joinPoint){
-         LOGGER.info("INTERCEPTANDO REQUISIÇÃO DE POST BODY COMPOSITION PARA VALIDAR SUA AUTORIZAÇÃO");
+         LOGGER.info("INTERCEPTANDO REQUISIÇÃO DE BODY COMPOSITION PARA VALIDAR SUA AUTORIZAÇÃO");
          getIdFromPointcutArgument(joinPoint);
          UUID tokenId = getIdFromHeaderToken();
          if (!interceptedId.equals(tokenId)){
@@ -60,6 +60,9 @@ public class BodyModuleAuthorizationAspect {
                 UUID id = (UUID) argument;
                 setInterceptedId(id);
             }
+        }
+        else {
+            throw new BodyCustomExceptions.NoCompatibleObjectFoundInInterceptedMethodArgument();
         }
     }
 

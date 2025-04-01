@@ -15,4 +15,10 @@ public class BodyCustomExceptions {
         public UnauthorizedRequest(){ super("Recurso não disponível para esse usuário"); }
     }
 
+    public static class NoCompatibleObjectFoundInInterceptedMethodArgument extends RuntimeException{
+        public NoCompatibleObjectFoundInInterceptedMethodArgument(){
+            super("Nenhum objeto compativel encontrado para validar a autorização do método");
+        }
+    }
+
 }
