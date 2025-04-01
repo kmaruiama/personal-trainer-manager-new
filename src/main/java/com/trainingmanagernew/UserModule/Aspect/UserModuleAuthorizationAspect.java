@@ -17,17 +17,17 @@ import java.util.UUID;
 
 @Aspect
 @Component
-public class AuthorizationAspect {
+public class UserModuleAuthorizationAspect {
 
     private final HttpServletRequest httpServletRequest;
     private final TokenExtraction tokenExtraction;
 
-    AuthorizationAspect(HttpServletRequest httpServletRequest, TokenExtraction tokenExtraction){
+    UserModuleAuthorizationAspect(HttpServletRequest httpServletRequest, TokenExtraction tokenExtraction){
         this.httpServletRequest = httpServletRequest;
         this.tokenExtraction = tokenExtraction;
     }
 
-    @Before(value = "@annotation(AuthorizeRequest)")
+    @Before(value = "@annotation(AuthorizeUserModuleRequest)")
     public void validateRequestAuthorization(JoinPoint joinPoint){
         UUID interceptedId = getIdFromPointcutArgument(joinPoint);
         UUID tokenId = getIdFromHeaderToken();
@@ -37,7 +37,6 @@ public class AuthorizationAspect {
     }
 
     private UUID getIdFromPointcutArgument(JoinPoint joinPoint){
-        Object [] arguments = joinPoint.getArgs();
         UUID id = null;
         Optional<Object> dtoOpt = Arrays.stream(joinPoint.getArgs())
                 /*horripilante mas é o único jeito de conseguir interceptar os métodos,

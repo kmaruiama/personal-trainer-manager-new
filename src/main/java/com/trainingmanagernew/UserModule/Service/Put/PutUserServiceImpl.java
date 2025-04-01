@@ -1,32 +1,38 @@
 package com.trainingmanagernew.UserModule.Service.Put;
 
-import com.trainingmanagernew.UserModule.Aspect.AuthorizeRequest;
 import com.trainingmanagernew.UserModule.Dto.UserDto;
 import com.trainingmanagernew.UserModule.Entity.UserEntity;
 import com.trainingmanagernew.UserModule.Exception.UserCustomExceptions;
 import com.trainingmanagernew.UserModule.Repository.UserRepository;
+import com.trainingmanagernew.UserModule.Service.LocalJwtExtractor.UserTokenExtraction;
 import com.trainingmanagernew.UserModule.Service.Validation.NewUserValidationService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class PutUserServiceImpl implements PutUserService {
 
     private final UserRepository userRepository;
     private final NewUserValidationService newUserValidationService;
+    private final UserTokenExtraction userTokenExtraction;
 
-    public PutUserServiceImpl(UserRepository userRepository, NewUserValidationService newUserValidationService) {
+    public PutUserServiceImpl(UserRepository userRepository, NewUserValidationService newUserValidationService, UserTokenExtraction userTokenExtraction) {
         this.userRepository = userRepository;
         this.newUserValidationService = newUserValidationService;
+        this.userTokenExtraction = userTokenExtraction;
     }
 
-    @AuthorizeRequest
+    //@AuthorizeRequest
+    /* na verdade eu não preciso desse aspecto já que o parse do id modificado vai vir justamente do
+    token */
     @Transactional
     @Override
-    public void put(UserDto userDto) {
-        Optional<UserEntity> userEntityOptional = userRepository.findById(userDto.getId());
+    public void put(UserDto userDto, String authHeader) {
+        UUID userId = userTokenExtraction.extractUuid(authHeader);
+        Optional<UserEntity> userEntityOptional = userRepository.findById(userId);
         UserEntity userEntity;
         if (userEntityOptional.isPresent()){
             userEntity = userEntityOptional.get();

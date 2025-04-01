@@ -2,7 +2,6 @@ package com.trainingmanagernew.CustomerModule.Entity;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -11,7 +10,7 @@ import java.util.UUID;
 public class CustomerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    UUID id;
+    private UUID id;
 
     private String name;
 

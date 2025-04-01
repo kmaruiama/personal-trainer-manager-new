@@ -37,7 +37,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> register(@RequestBody RegisterDto registerDto){
         registerNewUserService.register(registerDto);
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.status(HttpStatus.CREATED)
                 .body(Map.of("message", "Usuário registrado com sucesso."));
     }
 
@@ -59,7 +59,7 @@ public class UserController {
     @PutMapping("/edit")
     public ResponseEntity<Map<String, String>> editUser(@RequestBody UserDto userDto,
             @RequestHeader("Authorization") String authHeader){
-        putUserService.put(userDto);
+        putUserService.put(userDto, authHeader);
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Usuário editado com sucesso."));
     }
 

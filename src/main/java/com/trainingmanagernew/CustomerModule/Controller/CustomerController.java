@@ -31,7 +31,7 @@ public class CustomerController {
     ResponseEntity<Map<String, String>> registerNewCustomer (@Valid @RequestBody CustomerInfoDto customerInfoDto,
                                                              @RequestHeader("Authorization") String authHeader){
         registerCustomerService.register(customerInfoDto, authHeader);
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity.status(HttpStatus.CREATED)
                 .body(Map.of("message", "Usuário registrado com sucesso."));
     }
 

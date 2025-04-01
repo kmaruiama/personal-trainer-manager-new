@@ -51,9 +51,7 @@ public class RegisterDto {
     @NotBlank(message = "O número não pode estar vazio")
     @Column(nullable = false, unique = true)
     @Size(min = 10, max = 15, message = "Inclua o DDD")
-    @Pattern(regexp = "\\d+", message = "O número deve conter apenas dígitos")
     private String number;
-
 
     public String getUsername() {
         return username;

@@ -3,6 +3,7 @@ package com.trainingmanagernew.UserModule.Service.Put;
 import com.trainingmanagernew.UserModule.Dto.UserDto;
 import com.trainingmanagernew.UserModule.Entity.UserEntity;
 import com.trainingmanagernew.UserModule.Repository.UserRepository;
+import com.trainingmanagernew.UserModule.Service.LocalJwtExtractor.UserTokenExtraction;
 import com.trainingmanagernew.UserModule.Service.Validation.NewUserValidationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,7 @@ import static org.mockito.Mockito.*;
 class PutUserServiceImplTest {
     @Mock private UserRepository userRepository;
     @Mock private NewUserValidationService newUserValidationService;
+    @Mock private UserTokenExtraction userTokenExtraction;
     @InjectMocks private PutUserServiceImpl putUserService;
 
     private UserDto userDto;
@@ -41,8 +43,9 @@ class PutUserServiceImplTest {
         mockUserEntity.setEmail("oldWhatever@whatever.com");
         mockUserEntity.setNumber("23454234543");
 
+        when(userTokenExtraction.extractUuid(any(String.class))).thenReturn(userDto.getId());
         when(userRepository.findById(userDto.getId())).thenReturn(Optional.of(mockUserEntity));
-        putUserService.put(userDto);
+        putUserService.put(userDto, "aaa");
 
         verify(newUserValidationService).checkPhoneNumberUnique(userDto.getNumber());
         verify(newUserValidationService).checkEmailUnique(userDto.getEmail());
@@ -59,8 +62,9 @@ class PutUserServiceImplTest {
         mockUserEntity.setEmail("whatever@whatever.com");
         mockUserEntity.setNumber("12345654324");
 
+        when(userTokenExtraction.extractUuid(any(String.class))).thenReturn(userDto.getId());
         when(userRepository.findById(userDto.getId())).thenReturn(Optional.of(mockUserEntity));
-        putUserService.put(userDto);
+        putUserService.put(userDto, "aaa");
 
         verify(newUserValidationService, times(0)).checkPhoneNumberUnique(userDto.getNumber());
         verify(newUserValidationService, times(0)).checkEmailUnique(userDto.getEmail());

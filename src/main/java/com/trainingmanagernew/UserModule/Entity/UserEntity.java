@@ -17,28 +17,16 @@ public class UserEntity {
     @Column(nullable = false, unique = true)
     private UUID id;
 
-    @NotNull(message = "O nome de usuário não pode ser nulo.")
-    @NotBlank(message = "O nome de usuário não pode estar vazio.")
-    @Size(min = 3, max = 50, message = "O nome de usuário deve ter entre 3 e 50 caracteres.")
     @Column(nullable = false, unique = true)
     private String username;
 
-    @NotNull(message = "A senha não pode ser nula.")
-    @NotBlank(message = "A senha não pode estar vazia.")
     @Column(nullable = false)
     private String password;
 
-    @NotNull(message = "O e-mail não pode ser nulo.")
-    @NotBlank(message = "O e-mail não pode estar vazio")
-    @Email(message = "O e-mail deve ser válido.")
     @Column(nullable = false, unique = true)
     private String email;
 
-    @NotNull(message = "O número não pode ser nulo.")
-    @NotBlank(message = "O número não pode estar vazio")
     @Column(nullable = false, unique = true)
-    @Size(min = 10, max = 15, message = "Inclua o DDD / O número deve ter entre 10 e 15 caracteres")
-    @Pattern(regexp = "\\d+", message = "O número deve conter apenas dígitos")
     private String number;
 
     private Long trainerOwnedId;
