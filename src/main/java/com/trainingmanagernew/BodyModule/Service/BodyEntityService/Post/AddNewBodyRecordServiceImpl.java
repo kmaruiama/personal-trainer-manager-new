@@ -1,7 +1,7 @@
-package com.trainingmanagernew.BodyModule.Service.Post;
+package com.trainingmanagernew.BodyModule.Service.BodyEntityService.Post;
 
 import com.trainingmanagernew.BodyModule.Aspect.AuthorizeBodyModuleRequest;
-import com.trainingmanagernew.BodyModule.Dto.BodyPostDto;
+import com.trainingmanagernew.BodyModule.Dto.Body.BodyPostDto;
 import com.trainingmanagernew.BodyModule.Entity.BodyEntity;
 import com.trainingmanagernew.BodyModule.Entity.BodyOwnerEntity;
 import com.trainingmanagernew.BodyModule.Exception.BodyCustomExceptions;
@@ -36,11 +36,9 @@ public class AddNewBodyRecordServiceImpl implements AddNewBodyRecordService {
     }
 
     private void setBodyEntityOwner(BodyEntity bodyEntity, UUID id){
-        BodyOwnerEntity bodyOwnerEntity;
         Optional<BodyOwnerEntity> bodyOwnerEntityOptional = bodyOwnerEntityRepository.findById(id);
         if (bodyOwnerEntityOptional.isPresent()){
-            bodyOwnerEntity = bodyOwnerEntityOptional.get();
-            bodyEntity.setBodyOwnerEntity(bodyOwnerEntity);
+            bodyEntity.setBodyOwnerEntity(bodyOwnerEntityOptional.get());
         }
         else {
             throw new BodyCustomExceptions.BodyOwnerEntityNotFound();

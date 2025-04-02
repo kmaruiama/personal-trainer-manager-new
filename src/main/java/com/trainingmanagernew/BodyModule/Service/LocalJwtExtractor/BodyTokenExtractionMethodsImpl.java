@@ -3,7 +3,6 @@ package com.trainingmanagernew.BodyModule.Service.LocalJwtExtractor;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import com.trainingmanagernew.CustomerModule.Exception.CustomerCustomExceptions;
-import com.trainingmanagernew.CustomerModule.Service.LocalJwtExtractor.TokenExtraction;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;

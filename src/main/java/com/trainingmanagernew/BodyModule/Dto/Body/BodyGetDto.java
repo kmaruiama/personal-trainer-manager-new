@@ -1,4 +1,4 @@
-package com.trainingmanagernew.BodyModule.Dto;
+package com.trainingmanagernew.BodyModule.Dto.Body;
 
 import java.time.LocalDate;
 import java.util.UUID;

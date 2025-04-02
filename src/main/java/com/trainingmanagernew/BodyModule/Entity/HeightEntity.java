@@ -20,4 +20,36 @@ public class HeightEntity {
 
     @Column(nullable = false)
     private float height;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public BodyOwnerEntity getBodyOwnerEntity() {
+        return bodyOwnerEntity;
+    }
+
+    public void setBodyOwnerEntity(BodyOwnerEntity bodyOwnerEntity) {
+        this.bodyOwnerEntity = bodyOwnerEntity;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+    }
 }

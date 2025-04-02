@@ -1,4 +1,4 @@
-package com.trainingmanagernew.BodyModule.Service.Delete;
+package com.trainingmanagernew.BodyModule.Service.BodyEntityService.Delete;
 
 import java.util.UUID;
 

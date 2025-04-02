@@ -1,49 +1,41 @@
-package com.trainingmanagernew.BodyModule.Service.Get;
+package com.trainingmanagernew.BodyModule.Service.BodyEntityService.Get;
 
 import com.trainingmanagernew.BodyModule.Aspect.AuthorizeBodyModuleRequest;
-import com.trainingmanagernew.BodyModule.Dto.BodyGetDto;
+import com.trainingmanagernew.BodyModule.Dto.Body.BodyGetDto;
 import com.trainingmanagernew.BodyModule.Entity.BodyEntity;
 import com.trainingmanagernew.BodyModule.Entity.BodyOwnerEntity;
 import com.trainingmanagernew.BodyModule.Exception.BodyCustomExceptions;
 import com.trainingmanagernew.BodyModule.Repository.BodyEntityRepository;
 import com.trainingmanagernew.BodyModule.Repository.BodyOwnerEntityRepository;
+import com.trainingmanagernew.BodyModule.Service.InitializeBodyEntityOwner;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class GetAllEntitiesByIdImpl implements GetAllBodyEntitiesById {
+public class GetAllBodyEntitiesByIdImpl implements GetAllBodyEntitiesById {
     private final BodyEntityRepository bodyEntityRepository;
     private final BodyOwnerEntityRepository bodyOwnerEntityRepository;
+    private final InitializeBodyEntityOwner initializeBodyEntityOwner;
 
-    public GetAllEntitiesByIdImpl(BodyEntityRepository bodyEntityRepository, BodyOwnerEntityRepository bodyOwnerEntityRepository) {
+    public GetAllBodyEntitiesByIdImpl(BodyEntityRepository bodyEntityRepository, BodyOwnerEntityRepository bodyOwnerEntityRepository, InitializeBodyEntityOwner initializeBodyEntityOwner) {
         this.bodyEntityRepository = bodyEntityRepository;
         this.bodyOwnerEntityRepository = bodyOwnerEntityRepository;
+        this.initializeBodyEntityOwner = initializeBodyEntityOwner;
     }
 
     @AuthorizeBodyModuleRequest
     @Override
     public List<BodyGetDto> get(UUID id) {
-        BodyOwnerEntity bodyOwnerEntity = initializeBodyOwnerEntity(id);
+        BodyOwnerEntity bodyOwnerEntity = initializeBodyEntityOwner.initializeBodyOwnerEntity(id);
 
         List<BodyEntity> bodyEntityList = bodyEntityRepository.findAllEntitiesByBodyOwnerEntity(bodyOwnerEntity);
         if (bodyEntityList.isEmpty()){
             throw new BodyCustomExceptions.BodyEntityListIsEmpty();
         }
         return convert(bodyEntityList);
-    }
-
-    private BodyOwnerEntity initializeBodyOwnerEntity(UUID uuid){
-        Optional<BodyOwnerEntity> bodyOwnerEntityOptional = bodyOwnerEntityRepository.findById(uuid);
-        if (bodyOwnerEntityOptional.isPresent()){
-            return bodyOwnerEntityOptional.get();
-        }
-        else {
-            throw new BodyCustomExceptions.BodyOwnerEntityNotFound();
-        }
     }
 
     private List<BodyGetDto> convert(List<BodyEntity> bodyEntityList){

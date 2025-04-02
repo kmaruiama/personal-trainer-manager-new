@@ -1,11 +1,11 @@
 package com.trainingmanagernew.BodyModule.Controller;
 
-import com.trainingmanagernew.BodyModule.Dto.BodyGetDto;
-import com.trainingmanagernew.BodyModule.Dto.BodyPostDto;
-import com.trainingmanagernew.BodyModule.Service.Delete.DeleteBodyEntityService;
-import com.trainingmanagernew.BodyModule.Service.Get.GetAllBodyEntitiesById;
-import com.trainingmanagernew.BodyModule.Service.Post.AddNewBodyRecordService;
-import com.trainingmanagernew.BodyModule.Service.Put.EditBodyEntityService;
+import com.trainingmanagernew.BodyModule.Dto.Body.BodyGetDto;
+import com.trainingmanagernew.BodyModule.Dto.Body.BodyPostDto;
+import com.trainingmanagernew.BodyModule.Service.BodyEntityService.Delete.DeleteBodyEntityService;
+import com.trainingmanagernew.BodyModule.Service.BodyEntityService.Get.GetAllBodyEntitiesById;
+import com.trainingmanagernew.BodyModule.Service.BodyEntityService.Post.AddNewBodyRecordService;
+import com.trainingmanagernew.BodyModule.Service.BodyEntityService.Put.EditBodyEntityService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/body")
+@RequestMapping("api/body/body")
 @Validated
 public class BodyController {
     private final AddNewBodyRecordService addNewBodyRecordService;

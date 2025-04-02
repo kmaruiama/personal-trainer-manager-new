@@ -1,4 +1,4 @@
-package com.trainingmanagernew.BodyModule.Dto;
+package com.trainingmanagernew.BodyModule.Dto.Body;
 
 
 import jakarta.validation.constraints.Max;
@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public class BodyPostDto {
+    @NotNull
     private UUID bodyOwnerId;
 
     @NotNull(message = "A data não pode ser nula.")

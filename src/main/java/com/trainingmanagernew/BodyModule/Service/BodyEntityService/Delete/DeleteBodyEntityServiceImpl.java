@@ -1,4 +1,4 @@
-package com.trainingmanagernew.BodyModule.Service.Delete;
+package com.trainingmanagernew.BodyModule.Service.BodyEntityService.Delete;
 
 import com.trainingmanagernew.BodyModule.Aspect.AuthorizeBodyModuleRequest;
 import com.trainingmanagernew.BodyModule.Repository.BodyEntityRepository;

@@ -1,9 +1,15 @@
 package com.trainingmanagernew.BodyModule.Aspect;
 
-import com.trainingmanagernew.BodyModule.Dto.BodyPostDto;
+import com.trainingmanagernew.BodyModule.Dto.Body.BodyPostDto;
+import com.trainingmanagernew.BodyModule.Dto.Height.HeightGetDto;
+import com.trainingmanagernew.BodyModule.Dto.Height.HeightPostDto;
+import com.trainingmanagernew.BodyModule.Entity.BodyEntity;
 import com.trainingmanagernew.BodyModule.Entity.BodyOwnerEntity;
+import com.trainingmanagernew.BodyModule.Entity.HeightEntity;
 import com.trainingmanagernew.BodyModule.Exception.BodyCustomExceptions;
+import com.trainingmanagernew.BodyModule.Repository.BodyEntityRepository;
 import com.trainingmanagernew.BodyModule.Repository.BodyOwnerEntityRepository;
+import com.trainingmanagernew.BodyModule.Repository.HeightEntityRepository;
 import com.trainingmanagernew.BodyModule.Service.LocalJwtExtractor.BodyTokenExtraction;
 import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.JoinPoint;
@@ -20,45 +26,56 @@ import java.util.logging.Logger;
 @Aspect
 public class BodyModuleAuthorizationAspect {
 
-    private Logger LOGGER = Logger.getLogger(BodyModuleAuthorizationAspect.class.getName());
-
+    private final BodyEntityRepository bodyEntityRepository;
+    private final HeightEntityRepository heightEntityRepository;
     private final BodyOwnerEntityRepository bodyOwnerEntityRepository;
     private final BodyTokenExtraction bodyTokenExtraction;
     private final HttpServletRequest httpServletRequest;
 
+    private Logger LOGGER = Logger.getLogger(BodyModuleAuthorizationAspect.class.getName());
+
+
     public BodyModuleAuthorizationAspect(BodyOwnerEntityRepository bodyOwnerEntityRepository,
                                          BodyTokenExtraction bodyTokenExtraction,
-                                         HttpServletRequest httpServletRequest) {
+                                         HttpServletRequest httpServletRequest,
+                                         BodyEntityRepository bodyEntityRepository,
+                                         HeightEntityRepository heightEntityRepository) {
         this.bodyOwnerEntityRepository = bodyOwnerEntityRepository;
         this.bodyTokenExtraction = bodyTokenExtraction;
         this.httpServletRequest = httpServletRequest;
+        this.bodyEntityRepository = bodyEntityRepository;
+        this.heightEntityRepository = heightEntityRepository;
     }
 
-    private UUID interceptedId;
+    private UUID interceptedUserId;
+    private BodyOwnerEntity bodyOwnerEntity;
 
     @Before(value = "@annotation(AuthorizeBodyModuleRequest)")
     public void validateRequestAuthorization(JoinPoint joinPoint){
          LOGGER.info("INTERCEPTANDO REQUISIÇÃO DE BODY COMPOSITION PARA VALIDAR SUA AUTORIZAÇÃO");
          getIdFromPointcutArgument(joinPoint);
          UUID tokenId = getIdFromHeaderToken();
-         if (!interceptedId.equals(tokenId)){
+         if (!interceptedUserId.equals(tokenId)){
             throw new BodyCustomExceptions.UnauthorizedRequest();
         }
     }
 
     private void getIdFromPointcutArgument(JoinPoint joinPoint){
         Optional<Object> optionalArgument = Arrays.stream(joinPoint.getArgs())
-                .filter(arg -> arg instanceof UUID | arg instanceof BodyPostDto)
+                .filter(arg -> arg instanceof UUID | arg instanceof BodyPostDto | arg instanceof HeightPostDto)
                 .findFirst();
         if (optionalArgument.isPresent()){
             Object argument = optionalArgument.get();
-            if (argument instanceof BodyPostDto){
-                BodyPostDto bodyPostDto = (BodyPostDto) argument;
-                returnInterceptedIdFromPostOrPut(bodyPostDto);
+            if (argument instanceof BodyPostDto bodyPostDto){
+                processBodyPostDto(bodyPostDto);
             }
-            if (argument instanceof UUID){
-                UUID id = (UUID) argument;
-                setInterceptedId(id);
+
+            if (argument instanceof UUID id){
+                setInterceptedBodyOwnerId(id);
+            }
+
+            if (argument instanceof HeightPostDto heightPostDto){
+                processHeightPostDto(heightPostDto);
             }
         }
         else {
@@ -66,26 +83,64 @@ public class BodyModuleAuthorizationAspect {
         }
     }
 
-    private void returnInterceptedIdFromPostOrPut(BodyPostDto bodyPostDto){
-        UUID id = bodyPostDto.getBodyOwnerId();
-        setInterceptedId(id);
+    private void processBodyPostDto(BodyPostDto bodyPostDto){
+        setInterceptedBodyOwnerId(bodyPostDto.getBodyOwnerId());
+        if (bodyPostDto.getOptionalBodyEntityId() != null){
+            bodyPutResourceOwnershipValidation(bodyPostDto.getOptionalBodyEntityId(), bodyOwnerEntity.getId());
+        }
     }
 
+    private void processHeightPostDto(HeightPostDto heightPostDto){
+        setInterceptedBodyOwnerId(heightPostDto.getBodyOwnerId());
+        if (heightPostDto.getOptionalHeightEntityId() != null){
+            heightPutResourceOwnershipValidation(heightPostDto.getOptionalHeightEntityId(), bodyOwnerEntity.getId());
+        }
+    }
 
-    private void setInterceptedId(UUID id){
+    private void bodyPutResourceOwnershipValidation(UUID id, UUID bodyOwnerId){
+        BodyEntity bodyEntity;
+        Optional<BodyEntity> bodyEntityOptional = bodyEntityRepository.findById(id);
+        if (bodyEntityOptional.isPresent()){
+            bodyEntity = bodyEntityOptional.get();
+        }
+        else {
+            throw new BodyCustomExceptions.BodyEntityNotFound();
+        }
+        if (!bodyEntity.getBodyOwnerEntity().getId().equals(bodyOwnerId)){
+            throw new BodyCustomExceptions.UnauthorizedRequest();
+        }
+    }
+
+    private void heightPutResourceOwnershipValidation(UUID id, UUID bodyOwnerId){
+        HeightEntity heightEntity;
+        Optional<HeightEntity> heightEntityOptional = heightEntityRepository.findById(id);
+        if (heightEntityOptional.isPresent()){
+            heightEntity = heightEntityOptional.get();
+        }
+        else{
+            throw new BodyCustomExceptions.HeightEntityNotFound();
+        }
+        if (!heightEntity.getBodyOwnerEntity().getId().equals(bodyOwnerId)){
+            throw new BodyCustomExceptions.UnauthorizedRequest();
+        }
+    }
+
+    private void setInterceptedBodyOwnerId(UUID id){
         Optional<BodyOwnerEntity> bodyOwnerEntityOptional = bodyOwnerEntityRepository.findById(id);
-        BodyOwnerEntity bodyOwnerEntity;
         if (bodyOwnerEntityOptional.isPresent()){
             bodyOwnerEntity = bodyOwnerEntityOptional.get();
         }
         else {
             throw new BodyCustomExceptions.BodyOwnerEntityNotFound();
         }
-        this.interceptedId = bodyOwnerEntity.getCustomerOwnerId();
+        LOGGER.info("TOKEN INTERCEPTADO PELO PARÂMETRO: " + id);
+        this.interceptedUserId = bodyOwnerEntity.getCustomerOwnerId();
     }
 
     private UUID getIdFromHeaderToken(){
         String token = httpServletRequest.getHeader("Authorization");
-        return bodyTokenExtraction.extractUuid(token);
+        UUID id = bodyTokenExtraction.extractUuid(token);
+        LOGGER.info("TOKEN INTERCEPTADO PELO REQUEST: " + id);
+        return id;
     }
 }

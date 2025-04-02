@@ -1,7 +1,7 @@
-package com.trainingmanagernew.BodyModule.Service.Put;
+package com.trainingmanagernew.BodyModule.Service.BodyEntityService.Put;
 
 import com.trainingmanagernew.BodyModule.Aspect.AuthorizeBodyModuleRequest;
-import com.trainingmanagernew.BodyModule.Dto.BodyPostDto;
+import com.trainingmanagernew.BodyModule.Dto.Body.BodyPostDto;
 import com.trainingmanagernew.BodyModule.Entity.BodyEntity;
 import com.trainingmanagernew.BodyModule.Exception.BodyCustomExceptions;
 import com.trainingmanagernew.BodyModule.Repository.BodyEntityRepository;
