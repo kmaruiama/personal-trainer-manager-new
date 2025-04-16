@@ -15,7 +15,6 @@ public class HeightEntity {
     private LocalDate date;
 
     @ManyToOne
-    @JoinColumn(name = "bodyOwner_id")
     private BodyOwnerEntity bodyOwnerEntity;
 
     @Column(nullable = false)

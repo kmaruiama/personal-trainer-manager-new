@@ -1,28 +1,38 @@
 package com.trainingmanagernew.BodyModule.Entity;
 
-
+import com.trainingmanagernew.BodyModule.Entity.Workout.ProgramEntity;
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 public class BodyOwnerEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false)
     private UUID id;
+
     //customerEntity
     @Column(nullable = false, unique = true)
     private UUID customerId;
+
     //userEntity
     @Column(nullable = false)
     private UUID customerOwnerId;
 
-    @OneToMany(mappedBy = "bodyOwnerEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "bodyOwnerEntity")
     private List<HeightEntity> heightEntityList = new ArrayList<>();
-    @OneToMany(mappedBy = "bodyOwnerEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "bodyOwnerEntity")
     private List<BodyEntity> bodyEntityList = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "bodyOwnerEntity")
+    private List<ProgramEntity> programEntityList = new ArrayList<>();
 
     public UUID getCustomerId() {
         return customerId;

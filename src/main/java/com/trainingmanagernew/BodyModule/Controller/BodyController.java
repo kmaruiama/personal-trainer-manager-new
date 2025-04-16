@@ -2,8 +2,10 @@ package com.trainingmanagernew.BodyModule.Controller;
 
 import com.trainingmanagernew.BodyModule.Dto.Body.BodyGetDto;
 import com.trainingmanagernew.BodyModule.Dto.Body.BodyPostDto;
+import com.trainingmanagernew.BodyModule.Entity.BodyEntity;
 import com.trainingmanagernew.BodyModule.Service.BodyEntityService.Delete.DeleteBodyEntityService;
 import com.trainingmanagernew.BodyModule.Service.BodyEntityService.Get.GetAllBodyEntitiesById;
+import com.trainingmanagernew.BodyModule.Service.BodyEntityService.Get.GetLastBodyEntityByOwnerId;
 import com.trainingmanagernew.BodyModule.Service.BodyEntityService.Post.AddNewBodyRecordService;
 import com.trainingmanagernew.BodyModule.Service.BodyEntityService.Put.EditBodyEntityService;
 import jakarta.validation.Valid;
@@ -24,12 +26,14 @@ public class BodyController {
     private final GetAllBodyEntitiesById getAllBodyEntitiesById;
     private final EditBodyEntityService editBodyEntityService;
     private final DeleteBodyEntityService deleteBodyEntityService;
+    private final GetLastBodyEntityByOwnerId getLastBodyEntityByOwnerId;
 
-    public BodyController(AddNewBodyRecordService addNewBodyRecordService, GetAllBodyEntitiesById getAllBodyEntitiesById, EditBodyEntityService editBodyEntityService, DeleteBodyEntityService deleteBodyEntityService) {
+    public BodyController(AddNewBodyRecordService addNewBodyRecordService, GetAllBodyEntitiesById getAllBodyEntitiesById, EditBodyEntityService editBodyEntityService, DeleteBodyEntityService deleteBodyEntityService, GetLastBodyEntityByOwnerId getLastBodyEntityByOwnerId) {
         this.addNewBodyRecordService = addNewBodyRecordService;
         this.getAllBodyEntitiesById = getAllBodyEntitiesById;
         this.editBodyEntityService = editBodyEntityService;
         this.deleteBodyEntityService = deleteBodyEntityService;
+        this.getLastBodyEntityByOwnerId = getLastBodyEntityByOwnerId;
     }
 
     @PostMapping("/new")
@@ -58,5 +62,11 @@ public class BodyController {
                                                               @RequestHeader("Authorization") String authHeader){
         deleteBodyEntityService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Composição corporal deletada com sucesso"));
+    }
+
+    @GetMapping("/last")
+    public ResponseEntity<BodyGetDto> returnLastBodyCompositionInput(UUID id){
+          BodyGetDto bodyGetDto = getLastBodyEntityByOwnerId.get(id);
+          return ResponseEntity.status(HttpStatus.OK).body(bodyGetDto);
     }
 }

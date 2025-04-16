@@ -21,7 +21,6 @@ public class BodyEntity {
     private float bodyFat;
 
     @ManyToOne
-    @JoinColumn(name = "bodyOwner_id")
     private BodyOwnerEntity bodyOwnerEntity;
 
     public UUID getId() {
