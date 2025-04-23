@@ -25,4 +25,7 @@ public class SetEntity {
     //não vou transformar em relacionamento pela quantidade absurda de inputs que essa entidade vai receber
     @Column(nullable = false)
     private UUID exerciseId;
+
+    @ManyToOne
+    private WorkoutEntity workoutEntity;
 }

@@ -5,7 +5,7 @@ import com.trainingmanagernew.BodyModule.Dto.Height.HeightPostDto;
 import com.trainingmanagernew.BodyModule.Entity.BodyOwnerEntity;
 import com.trainingmanagernew.BodyModule.Entity.HeightEntity;
 import com.trainingmanagernew.BodyModule.Repository.HeightEntityRepository;
-import com.trainingmanagernew.BodyModule.Service.InitializeBodyEntityOwner;
+import com.trainingmanagernew.BodyModule.Service.BodyOwnerEntityService.Get.InitializeBodyEntityOwner;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +34,7 @@ public class AddNewHeightRecordServiceImpl  implements AddNewHeightRecordService
     }
 
     private void addHeightEntityOwner(HeightEntity heightEntity, UUID id){
-        BodyOwnerEntity bodyOwnerEntity = initializeBodyEntityOwner.initializeBodyOwnerEntity(id);
+        BodyOwnerEntity bodyOwnerEntity = initializeBodyEntityOwner.initialize(id);
         heightEntity.setBodyOwnerEntity(bodyOwnerEntity);
     }
 }

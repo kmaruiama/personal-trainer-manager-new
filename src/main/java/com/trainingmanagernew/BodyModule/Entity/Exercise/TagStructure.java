@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 import java.util.UUID;
 
 @Entity
-public class Tag {
+public class TagStructure {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -21,4 +21,7 @@ public class Tag {
 
     @Column(nullable = false)
     private PositionType positionType;
+
+    @OneToOne
+    private Exercise exercise;
 }

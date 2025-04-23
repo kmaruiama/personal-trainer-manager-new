@@ -13,9 +13,9 @@ import java.util.Map;
 @Controller
 @RequestMapping("/api/body/workout")
 public class WorkoutController {
-    @PostMapping
+    /*@PostMapping
     ResponseEntity<Map<String, String>> postNewWorkout (@RequestBody WorkoutPostDto workoutPostDto,
                                                         @RequestHeader ("Authorization") String authHeader){
 
-    }
+    }*/
 }

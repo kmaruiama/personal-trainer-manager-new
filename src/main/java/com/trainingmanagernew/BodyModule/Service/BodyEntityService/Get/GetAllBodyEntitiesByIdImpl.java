@@ -6,8 +6,7 @@ import com.trainingmanagernew.BodyModule.Entity.BodyEntity;
 import com.trainingmanagernew.BodyModule.Entity.BodyOwnerEntity;
 import com.trainingmanagernew.BodyModule.Exception.BodyCustomExceptions;
 import com.trainingmanagernew.BodyModule.Repository.BodyEntityRepository;
-import com.trainingmanagernew.BodyModule.Repository.BodyOwnerEntityRepository;
-import com.trainingmanagernew.BodyModule.Service.InitializeBodyEntityOwner;
+import com.trainingmanagernew.BodyModule.Service.BodyOwnerEntityService.Get.InitializeBodyEntityOwner;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,19 +16,17 @@ import java.util.UUID;
 @Service
 public class GetAllBodyEntitiesByIdImpl implements GetAllBodyEntitiesById {
     private final BodyEntityRepository bodyEntityRepository;
-    private final BodyOwnerEntityRepository bodyOwnerEntityRepository;
     private final InitializeBodyEntityOwner initializeBodyEntityOwner;
 
-    public GetAllBodyEntitiesByIdImpl(BodyEntityRepository bodyEntityRepository, BodyOwnerEntityRepository bodyOwnerEntityRepository, InitializeBodyEntityOwner initializeBodyEntityOwner) {
+    public GetAllBodyEntitiesByIdImpl(BodyEntityRepository bodyEntityRepository, InitializeBodyEntityOwner initializeBodyEntityOwner) {
         this.bodyEntityRepository = bodyEntityRepository;
-        this.bodyOwnerEntityRepository = bodyOwnerEntityRepository;
         this.initializeBodyEntityOwner = initializeBodyEntityOwner;
     }
 
     @AuthorizeBodyModuleRequest
     @Override
     public List<BodyGetDto> get(UUID id) {
-        BodyOwnerEntity bodyOwnerEntity = initializeBodyEntityOwner.initializeBodyOwnerEntity(id);
+        BodyOwnerEntity bodyOwnerEntity = initializeBodyEntityOwner.initialize(id);
 
         List<BodyEntity> bodyEntityList = bodyEntityRepository.findAllEntitiesByBodyOwnerEntity(bodyOwnerEntity);
         if (bodyEntityList.isEmpty()){

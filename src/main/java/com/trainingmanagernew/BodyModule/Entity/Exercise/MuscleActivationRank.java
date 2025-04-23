@@ -19,4 +19,7 @@ public class MuscleActivationRank {
     @Min(1)
     @Max(10)
     private int intensity;
+
+    @ManyToOne
+    private Muscle muscle;
 }

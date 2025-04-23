@@ -1,4 +1,4 @@
-package com.trainingmanagernew.BodyModule.Service;
+package com.trainingmanagernew.BodyModule.Service.BodyOwnerEntityService.Get;
 
 import com.trainingmanagernew.BodyModule.Entity.BodyOwnerEntity;
 import com.trainingmanagernew.BodyModule.Exception.BodyCustomExceptions;
@@ -16,7 +16,7 @@ public class InitializeBodyEntityOwner {
         this.bodyOwnerEntityRepository = bodyOwnerEntityRepository;
     }
 
-    public BodyOwnerEntity initializeBodyOwnerEntity(UUID uuid){
+    public BodyOwnerEntity initialize(UUID uuid){
         Optional<BodyOwnerEntity> bodyOwnerEntityOptional = bodyOwnerEntityRepository.findById(uuid);
         if (bodyOwnerEntityOptional.isPresent()){
             return bodyOwnerEntityOptional.get();

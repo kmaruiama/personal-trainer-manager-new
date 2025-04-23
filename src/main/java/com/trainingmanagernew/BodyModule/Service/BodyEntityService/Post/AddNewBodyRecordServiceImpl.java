@@ -7,6 +7,7 @@ import com.trainingmanagernew.BodyModule.Entity.BodyOwnerEntity;
 import com.trainingmanagernew.BodyModule.Exception.BodyCustomExceptions;
 import com.trainingmanagernew.BodyModule.Repository.BodyEntityRepository;
 import com.trainingmanagernew.BodyModule.Repository.BodyOwnerEntityRepository;
+import com.trainingmanagernew.BodyModule.Service.BodyOwnerEntityService.Get.InitializeBodyEntityOwner;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +18,12 @@ import java.util.UUID;
 public class AddNewBodyRecordServiceImpl implements AddNewBodyRecordService {
     private final BodyEntityRepository bodyEntityRepository;
     private final BodyOwnerEntityRepository bodyOwnerEntityRepository;
+    private final InitializeBodyEntityOwner initializeBodyEntityOwner;
 
-    public AddNewBodyRecordServiceImpl(BodyEntityRepository bodyEntityRepository, BodyOwnerEntityRepository bodyOwnerEntityRepository) {
+    public AddNewBodyRecordServiceImpl(BodyEntityRepository bodyEntityRepository, BodyOwnerEntityRepository bodyOwnerEntityRepository, InitializeBodyEntityOwner initializeBodyEntityOwner) {
         this.bodyEntityRepository = bodyEntityRepository;
         this.bodyOwnerEntityRepository = bodyOwnerEntityRepository;
+        this.initializeBodyEntityOwner = initializeBodyEntityOwner;
     }
 
     @AuthorizeBodyModuleRequest
@@ -31,18 +34,8 @@ public class AddNewBodyRecordServiceImpl implements AddNewBodyRecordService {
         bodyEntity.setDate(bodyPostDto.getDate());
         bodyEntity.setWeight(bodyPostDto.getWeight());
         bodyEntity.setBodyFat(bodyPostDto.getBodyFat());
-        setBodyEntityOwner(bodyEntity, bodyPostDto.getBodyOwnerId());
+        BodyOwnerEntity bodyOwnerEntity = initializeBodyEntityOwner.initialize(bodyPostDto.getBodyOwnerId());
+        bodyEntity.setBodyOwnerEntity(bodyOwnerEntity);
         bodyEntityRepository.save(bodyEntity);
     }
-
-    private void setBodyEntityOwner(BodyEntity bodyEntity, UUID id){
-        Optional<BodyOwnerEntity> bodyOwnerEntityOptional = bodyOwnerEntityRepository.findById(id);
-        if (bodyOwnerEntityOptional.isPresent()){
-            bodyEntity.setBodyOwnerEntity(bodyOwnerEntityOptional.get());
-        }
-        else {
-            throw new BodyCustomExceptions.BodyOwnerEntityNotFound();
-        }
-    }
-
 }

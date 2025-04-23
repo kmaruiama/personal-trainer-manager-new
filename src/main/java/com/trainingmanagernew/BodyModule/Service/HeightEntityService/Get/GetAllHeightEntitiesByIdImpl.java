@@ -6,7 +6,7 @@ import com.trainingmanagernew.BodyModule.Entity.BodyOwnerEntity;
 import com.trainingmanagernew.BodyModule.Entity.HeightEntity;
 import com.trainingmanagernew.BodyModule.Exception.BodyCustomExceptions;
 import com.trainingmanagernew.BodyModule.Repository.HeightEntityRepository;
-import com.trainingmanagernew.BodyModule.Service.InitializeBodyEntityOwner;
+import com.trainingmanagernew.BodyModule.Service.BodyOwnerEntityService.Get.InitializeBodyEntityOwner;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class GetAllHeightEntitiesByIdImpl implements GetAllHeightEntitiesById {
     @AuthorizeBodyModuleRequest
     @Override
     public List<HeightGetDto> get(UUID id) {
-        BodyOwnerEntity bodyOwnerEntity = initializeBodyEntityOwner.initializeBodyOwnerEntity(id);
+        BodyOwnerEntity bodyOwnerEntity = initializeBodyEntityOwner.initialize(id);
         List<HeightEntity> heightEntityList = heightEntityRepository.findAllByBodyOwnerEntity(bodyOwnerEntity);
         if (heightEntityList.isEmpty()){
             throw new BodyCustomExceptions.HeightEntityListIsEmpty();

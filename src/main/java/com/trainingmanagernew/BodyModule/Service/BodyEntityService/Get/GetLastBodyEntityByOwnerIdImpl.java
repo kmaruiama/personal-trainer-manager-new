@@ -6,6 +6,7 @@ import com.trainingmanagernew.BodyModule.Entity.BodyOwnerEntity;
 import com.trainingmanagernew.BodyModule.Exception.BodyCustomExceptions;
 import com.trainingmanagernew.BodyModule.Repository.BodyEntityRepository;
 import com.trainingmanagernew.BodyModule.Repository.BodyOwnerEntityRepository;
+import com.trainingmanagernew.BodyModule.Service.BodyOwnerEntityService.Get.InitializeBodyEntityOwner;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -13,24 +14,18 @@ import java.util.UUID;
 
 @Service
 public class GetLastBodyEntityByOwnerIdImpl implements GetLastBodyEntityByOwnerId {
-    private final BodyOwnerEntityRepository bodyOwnerEntityRepository;
     private final BodyEntityRepository bodyEntityRepository;
+    private final InitializeBodyEntityOwner initializeBodyEntityOwner;
 
-    public GetLastBodyEntityByOwnerIdImpl(BodyOwnerEntityRepository bodyOwnerEntityRepository, BodyEntityRepository bodyEntityRepository) {
-        this.bodyOwnerEntityRepository = bodyOwnerEntityRepository;
+    public GetLastBodyEntityByOwnerIdImpl(BodyEntityRepository bodyEntityRepository,
+                                          InitializeBodyEntityOwner initializeBodyEntityOwner) {
         this.bodyEntityRepository = bodyEntityRepository;
+        this.initializeBodyEntityOwner = initializeBodyEntityOwner;
     }
 
     @Override
     public BodyGetDto get(UUID bodyOwnerId) {
-        BodyOwnerEntity bodyOwnerEntity;
-        Optional<BodyOwnerEntity> bodyOwnerEntityOptional = bodyOwnerEntityRepository.findById(bodyOwnerId);
-        if (bodyOwnerEntityOptional.isPresent()){
-            bodyOwnerEntity = bodyOwnerEntityOptional.get();
-        }
-        else {
-            throw new BodyCustomExceptions.BodyOwnerEntityNotFound();
-        }
+        BodyOwnerEntity bodyOwnerEntity = initializeBodyEntityOwner.initialize(bodyOwnerId);
 
         Optional<BodyEntity> bodyEntityOptional = bodyEntityRepository.findFirstByBodyOwnerEntityOrderByDateDesc(bodyOwnerEntity);
         BodyEntity bodyEntity;
