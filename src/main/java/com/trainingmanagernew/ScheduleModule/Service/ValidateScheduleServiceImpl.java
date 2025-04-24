@@ -40,7 +40,7 @@ public class ValidateScheduleServiceImpl implements ValidateScheduleService {
     }
 
     private void validateTime(LocalTime start, LocalTime end){
-        if (start.isBefore(end)){
+        if (end.isBefore(start)){
             throw new ScheduleCustomExceptions.InvalidTimeException();
         }
     }

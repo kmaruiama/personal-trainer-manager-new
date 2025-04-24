@@ -1,5 +1,7 @@
 package com.trainingmanagernew.ScheduleModule.Dto;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalTime;
 import java.util.UUID;
@@ -9,6 +11,8 @@ public class SchedulePostDto {
     private UUID optionalScheduleId;
 
     @NotNull(message = "O dia da semana não pode ser nulo.")
+    @Min(1)
+    @Max(7)
     private int dayOfTheWeek;
 
     @NotNull(message = "O horário de início não pode ser nula.")

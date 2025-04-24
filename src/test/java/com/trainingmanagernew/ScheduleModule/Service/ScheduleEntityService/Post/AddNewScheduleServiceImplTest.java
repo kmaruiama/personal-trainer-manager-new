@@ -25,8 +25,6 @@ class AddNewScheduleServiceImplTest {
 
     @Mock private ValidateScheduleService validateScheduleService;
 
-    @Mock private InitializeScheduleEntityOwner initializeScheduleEntityOwner;
-
     @InjectMocks private AddNewScheduleServiceImpl addNewScheduleServiceImpl;
 
     @Test

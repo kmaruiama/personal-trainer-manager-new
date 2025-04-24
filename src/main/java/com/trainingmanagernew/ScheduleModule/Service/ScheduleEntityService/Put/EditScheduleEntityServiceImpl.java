@@ -34,6 +34,7 @@ public class EditScheduleEntityServiceImpl implements EditScheduleEntityService{
             throw new ScheduleCustomExceptions.ScheduleEntityNotFoundException();
         }
         changeParameters(schedulePostDto, scheduleEntity);
+        scheduleRepository.save(scheduleEntity);
     }
 
     private void changeParameters(SchedulePostDto schedulePostDto, ScheduleEntity scheduleEntity){
