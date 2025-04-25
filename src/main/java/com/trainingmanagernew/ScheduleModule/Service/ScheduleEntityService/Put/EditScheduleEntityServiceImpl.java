@@ -7,11 +7,11 @@ import com.trainingmanagernew.ScheduleModule.Exception.ScheduleCustomExceptions;
 import com.trainingmanagernew.ScheduleModule.Repository.ScheduleRepository;
 import com.trainingmanagernew.ScheduleModule.Service.ValidateScheduleService;
 import jakarta.transaction.Transactional;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Repository
+@Service
 public class EditScheduleEntityServiceImpl implements EditScheduleEntityService{
     private final ScheduleRepository scheduleRepository;
     private final ValidateScheduleService validateScheduleService;

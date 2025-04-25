@@ -14,7 +14,6 @@ public class DeleteBodyEntityServiceImpl implements DeleteBodyEntityService{
         this.bodyEntityRepository = bodyEntityRepository;
     }
 
-    @AuthorizeBodyModuleRequest
     @Override
     public void delete(UUID id){
         bodyEntityRepository.deleteById(id);

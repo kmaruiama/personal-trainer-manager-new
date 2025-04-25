@@ -71,6 +71,7 @@ public class BodyModuleAuthorizationAspect {
             }
 
             if (argument instanceof UUID id){
+                //serve apenas para o get, implementar para o delete depois
                 setInterceptedBodyOwnerId(id);
             }
 

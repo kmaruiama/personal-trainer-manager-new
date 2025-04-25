@@ -15,7 +15,12 @@ public class ScheduleCustomExceptions {
     public static class ScheduleEntityNotFoundException extends RuntimeException {
         public ScheduleEntityNotFoundException() {super("Agendamento com esse id não encontrado"); }
     }
+
     public static class InvalidTimeException extends RuntimeException {
         public InvalidTimeException() {super("Agendamento com o tempo inválido"); }
+    }
+
+    public static class UnauthorizedRequest extends RuntimeException {
+        public UnauthorizedRequest() { super("Recurso não disponível para esse usuário"); }
     }
 }

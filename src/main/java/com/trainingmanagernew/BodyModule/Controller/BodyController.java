@@ -44,6 +44,7 @@ public class BodyController {
     }
 
     @GetMapping("/all")
+    //id do owner
     public ResponseEntity<List<BodyGetDto>> getAllBodyRecordsById(@RequestParam UUID id,
                                                                   @RequestHeader("Authorization") String authHeader){
         List<BodyGetDto> bodyGetDtoList = getAllBodyEntitiesById.get(id);
@@ -58,6 +59,7 @@ public class BodyController {
     }
 
     @DeleteMapping("/delete")
+    //id do recurso
     public ResponseEntity<Map<String, String>> deleteBodyById(@RequestParam UUID id,
                                                               @RequestHeader("Authorization") String authHeader){
         deleteBodyEntityService.delete(id);
@@ -65,6 +67,7 @@ public class BodyController {
     }
 
     @GetMapping("/last")
+    //id do owner?
     public ResponseEntity<BodyGetDto> returnLastBodyCompositionInput(UUID id){
           BodyGetDto bodyGetDto = getLastBodyEntityByOwnerId.get(id);
           return ResponseEntity.status(HttpStatus.OK).body(bodyGetDto);

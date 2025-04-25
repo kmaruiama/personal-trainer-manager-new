@@ -1,0 +1,3 @@
+o aspecto que cuida de quase todas as requisicoes desse modulo nao intercepta metodos de parametro unico, sendo este um
+id de recursos, até o momento a unica requisicao desse tipo é o delete (put usa um dto para tal) mas isso pode mudar
+no futuro
