@@ -134,7 +134,7 @@ public class BodyModuleAuthorizationAspect {
         else {
             throw new BodyCustomExceptions.BodyOwnerEntityNotFound();
         }
-        LOGGER.info("TOKEN INTERCEPTADO PELO PARÂMETRO: " + id);
+        LOGGER.info("INTERCEPTANDO ID DOS PARAMETROS PARA O SERVIÇO");
         this.interceptedUserId = bodyOwnerEntity.getCustomerOwnerId();
     }
 

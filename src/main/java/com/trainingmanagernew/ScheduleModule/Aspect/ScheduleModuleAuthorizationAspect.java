@@ -6,6 +6,8 @@ import com.trainingmanagernew.ScheduleModule.Entity.ScheduleOwnerEntity;
 import com.trainingmanagernew.ScheduleModule.Exception.ScheduleCustomExceptions;
 import com.trainingmanagernew.ScheduleModule.Repository.ScheduleOwnerRepository;
 import com.trainingmanagernew.ScheduleModule.Repository.ScheduleRepository;
+import com.trainingmanagernew.ScheduleModule.Service.LocalJwtExtractor.ScheduleTokenExtraction;
+import jakarta.servlet.http.HttpServletRequest;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -21,19 +23,31 @@ import java.util.logging.Logger;
 public class ScheduleModuleAuthorizationAspect {
     private final ScheduleOwnerRepository scheduleOwnerRepository;
     private final ScheduleRepository scheduleRepository;
+    private final ScheduleTokenExtraction scheduleTokenExtraction;
+    private final HttpServletRequest httpServletRequest;
     Logger LOGGER = Logger.getLogger(ScheduleModuleAuthorizationAspect.class.getName());
 
     private UUID userFromToken;
     private UUID userFromScheduleOwner;
 
-    public ScheduleModuleAuthorizationAspect(ScheduleOwnerRepository scheduleOwnerRepository, ScheduleRepository scheduleRepository) {
+    public ScheduleModuleAuthorizationAspect(ScheduleOwnerRepository scheduleOwnerRepository,
+                                             ScheduleRepository scheduleRepository,
+                                             ScheduleTokenExtraction scheduleTokenExtraction,
+                                             HttpServletRequest httpServletRequest) {
         this.scheduleOwnerRepository = scheduleOwnerRepository;
         this.scheduleRepository = scheduleRepository;
+        this.scheduleTokenExtraction = scheduleTokenExtraction;
+        this.httpServletRequest = httpServletRequest;
     }
 
     @Before(value = "@annotation(AuthorizeScheduleModuleRequest)")
     public void validateRequestAuthorization(JoinPoint joinPoint){
         LOGGER.info("INTERCEPTANDO REQUISIÇÃO DE SCHEDULE PARA VALIDAR SUA AUTORIZAÇÃO");
+        getArgumentFromJoinPoint(joinPoint);
+        userFromToken = getIdFromHeaderToken();
+        if(!userFromToken.equals(userFromScheduleOwner)){
+            throw new ScheduleCustomExceptions.UnauthorizedRequest();
+        }
     }
 
     private void getArgumentFromJoinPoint(JoinPoint joinPoint){
@@ -46,7 +60,7 @@ public class ScheduleModuleAuthorizationAspect {
                 processSchedulePostDto(schedulePostDto);
             }
             if (argument instanceof UUID id){
-
+                getUserIdFromScheduleOwner(id);
             }
         }
     }
@@ -81,6 +95,14 @@ public class ScheduleModuleAuthorizationAspect {
         else {
             throw new ScheduleCustomExceptions.ScheduleOwnerNotFoundException();
         }
+        LOGGER.info("INTERCEPTANDO ID DOS PARAMETROS PARA O SERVIÇO");
         userFromScheduleOwner = scheduleOwnerEntity.getUserId();
+    }
+
+    private UUID getIdFromHeaderToken(){
+        String token = httpServletRequest.getHeader("Authorization");
+        UUID id = scheduleTokenExtraction.extractUuid(token);
+        LOGGER.info("TOKEN INTERCEPTADO PELO REQUEST: " + id);
+        return id;
     }
 }
