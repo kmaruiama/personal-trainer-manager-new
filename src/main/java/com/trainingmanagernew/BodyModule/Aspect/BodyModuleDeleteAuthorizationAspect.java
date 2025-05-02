@@ -74,7 +74,7 @@ public class BodyModuleDeleteAuthorizationAspect{
         return deleteResourceDto;
     }
 
-    void processBodyDeletion(UUID id){
+    private void processBodyDeletion(UUID id){
         Optional<BodyEntity> bodyEntityOptional = bodyEntityRepository.findById(id);
         BodyEntity bodyEntity;
         if (bodyEntityOptional.isPresent()){
@@ -87,7 +87,7 @@ public class BodyModuleDeleteAuthorizationAspect{
         idFromResource = bodyOwnerEntity.getCustomerOwnerId();
     }
 
-    void processHeightDeletion(UUID id){
+    private void processHeightDeletion(UUID id){
         Optional<HeightEntity> heightEntityOptional = heightEntityRepository.findById(id);
         HeightEntity heightEntity;
         if (heightEntityOptional.isPresent()){
