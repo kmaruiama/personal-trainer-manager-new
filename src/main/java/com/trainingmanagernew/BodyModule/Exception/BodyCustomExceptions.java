@@ -24,5 +24,9 @@ public class BodyCustomExceptions {
     public static class HeightEntityListIsEmpty extends RuntimeException{
         public HeightEntityListIsEmpty(){ super ("O cliente não possui altura cadastrada"); }
     }
+    public static class IncorrectResourceType extends RuntimeException{
+        public IncorrectResourceType(){ super ("Recurso não reconhecido");}
+    }
+
 
 }

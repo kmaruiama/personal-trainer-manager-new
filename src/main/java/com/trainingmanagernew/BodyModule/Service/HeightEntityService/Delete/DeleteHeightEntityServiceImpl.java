@@ -1,10 +1,9 @@
 package com.trainingmanagernew.BodyModule.Service.HeightEntityService.Delete;
 
-import com.trainingmanagernew.BodyModule.Aspect.AuthorizeBodyModuleRequest;
+import com.trainingmanagernew.BodyModule.Aspect.AuthorizeBodyResourceRequest;
+import com.trainingmanagernew.BodyModule.Dto.Shared.DeleteResourceDto;
 import com.trainingmanagernew.BodyModule.Repository.HeightEntityRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 public class DeleteHeightEntityServiceImpl implements DeleteHeightEntityService{
@@ -14,9 +13,9 @@ public class DeleteHeightEntityServiceImpl implements DeleteHeightEntityService{
         this.heightEntityRepository = heightEntityRepository;
     }
 
-    @AuthorizeBodyModuleRequest
+    @AuthorizeBodyResourceRequest
     @Override
-    public void delete(UUID id) {
-        heightEntityRepository.deleteById(id);
+    public void delete(DeleteResourceDto deleteResourceDto) {
+        heightEntityRepository.deleteById(deleteResourceDto.getId());
     }
 }

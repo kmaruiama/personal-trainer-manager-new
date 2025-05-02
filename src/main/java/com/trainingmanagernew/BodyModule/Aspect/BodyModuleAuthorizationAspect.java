@@ -50,7 +50,7 @@ public class BodyModuleAuthorizationAspect {
     private UUID interceptedUserId;
     private BodyOwnerEntity bodyOwnerEntity;
 
-    @Before(value = "@annotation(AuthorizeBodyModuleRequest)")
+    @Before(value = "@annotation(com.trainingmanagernew.BodyModule.Aspect.AuthorizeBodyModuleRequest)")
     public void validateRequestAuthorization(JoinPoint joinPoint){
          LOGGER.info("INTERCEPTANDO REQUISIÇÃO DE BODY COMPOSITION PARA VALIDAR SUA AUTORIZAÇÃO");
          getIdFromPointcutArgument(joinPoint);

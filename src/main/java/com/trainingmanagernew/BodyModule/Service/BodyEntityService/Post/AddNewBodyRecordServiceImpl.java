@@ -4,15 +4,11 @@ import com.trainingmanagernew.BodyModule.Aspect.AuthorizeBodyModuleRequest;
 import com.trainingmanagernew.BodyModule.Dto.Body.BodyPostDto;
 import com.trainingmanagernew.BodyModule.Entity.BodyEntity;
 import com.trainingmanagernew.BodyModule.Entity.BodyOwnerEntity;
-import com.trainingmanagernew.BodyModule.Exception.BodyCustomExceptions;
 import com.trainingmanagernew.BodyModule.Repository.BodyEntityRepository;
 import com.trainingmanagernew.BodyModule.Repository.BodyOwnerEntityRepository;
 import com.trainingmanagernew.BodyModule.Service.BodyOwnerEntityService.Get.InitializeBodyEntityOwner;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class AddNewBodyRecordServiceImpl implements AddNewBodyRecordService {

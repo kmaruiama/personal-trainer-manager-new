@@ -27,7 +27,6 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 class ScheduleModuleAuthorizationAspectTest {
     @Mock private ScheduleOwnerRepository scheduleOwnerRepository;
-    @Mock private ScheduleRepository scheduleRepository;
     @Mock private ScheduleTokenExtraction scheduleTokenExtraction;
     @Mock private HttpServletRequest httpServletRequest;
     @InjectMocks ScheduleModuleAuthorizationAspect scheduleModuleAuthorizationAspect;

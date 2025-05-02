@@ -1,7 +1,7 @@
 package com.trainingmanagernew.BodyModule.Service.BodyEntityService.Delete;
 
-import java.util.UUID;
+import com.trainingmanagernew.BodyModule.Dto.Shared.DeleteResourceDto;
 
 public interface DeleteBodyEntityService {
-    void delete(UUID id);
+    void delete(DeleteResourceDto deleteResourceDto);
 }

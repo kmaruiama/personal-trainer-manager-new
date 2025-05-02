@@ -2,6 +2,7 @@ package com.trainingmanagernew.BodyModule.Controller;
 
 import com.trainingmanagernew.BodyModule.Dto.Body.BodyGetDto;
 import com.trainingmanagernew.BodyModule.Dto.Body.BodyPostDto;
+import com.trainingmanagernew.BodyModule.Dto.Shared.DeleteResourceDto;
 import com.trainingmanagernew.BodyModule.Entity.BodyEntity;
 import com.trainingmanagernew.BodyModule.Service.BodyEntityService.Delete.DeleteBodyEntityService;
 import com.trainingmanagernew.BodyModule.Service.BodyEntityService.Get.GetAllBodyEntitiesById;
@@ -52,7 +53,7 @@ public class BodyController {
     }
 
     @PutMapping("/edit")
-    public ResponseEntity<Map<String, String>> editBodyById(@Valid BodyPostDto bodyPostDto,
+    public ResponseEntity<Map<String, String>> editBodyById(@Valid @RequestBody BodyPostDto bodyPostDto,
                                                             @RequestHeader("Authorization") String authHeader){
         editBodyEntityService.edit(bodyPostDto);
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Composição corporal editada com sucesso"));
@@ -62,13 +63,17 @@ public class BodyController {
     //id do recurso
     public ResponseEntity<Map<String, String>> deleteBodyById(@RequestParam UUID id,
                                                               @RequestHeader("Authorization") String authHeader){
-        deleteBodyEntityService.delete(id);
+        DeleteResourceDto deleteResourceDto = new DeleteResourceDto();
+        deleteResourceDto.setId(id);
+        deleteResourceDto.setType("BODY");
+        deleteBodyEntityService.delete(deleteResourceDto);
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Composição corporal deletada com sucesso"));
     }
 
     @GetMapping("/last")
     //id do owner?
-    public ResponseEntity<BodyGetDto> returnLastBodyCompositionInput(UUID id){
+    public ResponseEntity<BodyGetDto> returnLastBodyCompositionInput(@RequestParam UUID id,
+                                                                     @RequestHeader("Authorization") String authHeader){
           BodyGetDto bodyGetDto = getLastBodyEntityByOwnerId.get(id);
           return ResponseEntity.status(HttpStatus.OK).body(bodyGetDto);
     }

@@ -1,10 +1,9 @@
 package com.trainingmanagernew.BodyModule.Service.BodyEntityService.Delete;
 
-import com.trainingmanagernew.BodyModule.Aspect.AuthorizeBodyModuleRequest;
+import com.trainingmanagernew.BodyModule.Aspect.AuthorizeBodyResourceRequest;
+import com.trainingmanagernew.BodyModule.Dto.Shared.DeleteResourceDto;
 import com.trainingmanagernew.BodyModule.Repository.BodyEntityRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 public class DeleteBodyEntityServiceImpl implements DeleteBodyEntityService{
@@ -14,8 +13,9 @@ public class DeleteBodyEntityServiceImpl implements DeleteBodyEntityService{
         this.bodyEntityRepository = bodyEntityRepository;
     }
 
+    @AuthorizeBodyResourceRequest
     @Override
-    public void delete(UUID id){
-        bodyEntityRepository.deleteById(id);
+    public void delete(DeleteResourceDto deleteResourceDto){
+        bodyEntityRepository.deleteById(deleteResourceDto.getId());
     }
 }
