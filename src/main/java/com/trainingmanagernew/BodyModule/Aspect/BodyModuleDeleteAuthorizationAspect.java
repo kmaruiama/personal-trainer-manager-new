@@ -41,7 +41,7 @@ public class BodyModuleDeleteAuthorizationAspect{
         this.bodyTokenExtraction = bodyTokenExtraction;
     }
 
-    @Before(value = "@annotation(com.trainingmanagernew.BodyModule.Aspect.AuthorizeBodyResourceRequest)")
+    @Before(value = "@annotation(AuthorizeBodyResourceRequest)")
     public void validateRequestAuthorization(JoinPoint joinPoint){
         LOGGER.info("VALIDANDO A AUTORIZAÇÃO DO DELETE DA COMPOSIÇÃO CORPORAL");
         DeleteResourceDto deleteResourceDto = getArgumentFromJoinPoint(joinPoint);

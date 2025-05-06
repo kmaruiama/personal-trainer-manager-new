@@ -7,6 +7,7 @@ import java.util.UUID;
 
 @Entity
 public class ScheduleEntity {
+    //adicionar o id do treino, do cliente e ambos os nomes aqui tb
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;

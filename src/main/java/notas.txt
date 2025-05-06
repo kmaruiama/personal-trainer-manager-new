@@ -1,0 +1,7 @@
+seria legal transformar esses aspectos que mexem no delete dos recursos
+em algum tipo de generalizacao, nao sei se é correto criar um aspecto só pra isso
+
+verificar no evento de registro de novo usuario em todos os modulos se um user com o mesmo
+id ja nao foi registrado por engano, apesar de eu nao enxergar um caso onde isso possa acontecer
+seria bom previnir
+

@@ -16,8 +16,9 @@ public class ScheduleEventListener {
     @EventListener
     public void eventHandler(GenericEvent<?> event){
         switch (event.getEventType()){
-            case "SUCCESSFUL-CUSTOMER-REGISTRATION":
+            case "USER-REGISTERED-COMPLETE":
                 registerNewScheduleOwnerService.register(event.getUserId());
+                break;
         }
     }
 }
