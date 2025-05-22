@@ -6,5 +6,6 @@ id ja nao foi registrado por engano, apesar de eu nao enxergar um caso onde isso
 seria bom previnir
 
 em atualizacoes de recursos compartilhados pelos módulos, a atualizacao deve se propagar (ex:
-mudança de nomes)
+mudança de nomes) <- ignorar, vou manter apenas os ids como referencial e na hora de servir as requisicoes
+pedir diretamente a informacao de outro modulo
 
