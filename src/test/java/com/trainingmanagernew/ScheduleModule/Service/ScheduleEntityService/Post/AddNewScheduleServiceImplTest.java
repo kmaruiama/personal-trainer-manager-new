@@ -3,6 +3,8 @@ package com.trainingmanagernew.ScheduleModule.Service.ScheduleEntityService.Post
 import com.trainingmanagernew.ScheduleModule.Dto.SchedulePostDto;
 import com.trainingmanagernew.ScheduleModule.Dto.ValidateScheduleDto;
 import com.trainingmanagernew.ScheduleModule.Entity.ScheduleEntity;
+import com.trainingmanagernew.ScheduleModule.Entity.ScheduleOwnerEntity;
+import com.trainingmanagernew.ScheduleModule.Repository.ScheduleOwnerRepository;
 import com.trainingmanagernew.ScheduleModule.Repository.ScheduleRepository;
 import com.trainingmanagernew.ScheduleModule.Service.InitializeScheduleEntityOwner;
 import com.trainingmanagernew.ScheduleModule.Service.ValidateScheduleService;
@@ -13,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalTime;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,6 +28,8 @@ class AddNewScheduleServiceImplTest {
 
     @Mock private ValidateScheduleService validateScheduleService;
 
+    @Mock private InitializeScheduleEntityOwner initializeScheduleEntityOwner;
+
     @InjectMocks private AddNewScheduleServiceImpl addNewScheduleServiceImpl;
 
     @Test
@@ -34,6 +39,8 @@ class AddNewScheduleServiceImplTest {
         schedulePostDto.setHourEnd(LocalTime.of(10, 40));
         schedulePostDto.setDayOfTheWeek(5);
         schedulePostDto.setScheduleOwnerId(UUID.randomUUID());
+
+        when(initializeScheduleEntityOwner.initialize(any(UUID.class))).thenReturn(new ScheduleOwnerEntity());
 
         addNewScheduleServiceImpl.add(schedulePostDto);
 

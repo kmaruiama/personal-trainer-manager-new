@@ -5,3 +5,6 @@ verificar no evento de registro de novo usuario em todos os modulos se um user c
 id ja nao foi registrado por engano, apesar de eu nao enxergar um caso onde isso possa acontecer
 seria bom previnir
 
+em atualizacoes de recursos compartilhados pelos módulos, a atualizacao deve se propagar (ex:
+mudança de nomes)
+

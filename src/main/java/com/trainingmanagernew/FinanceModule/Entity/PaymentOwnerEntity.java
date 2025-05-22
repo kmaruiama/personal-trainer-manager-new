@@ -10,8 +10,10 @@ import java.util.UUID;
 public class PaymentOwnerEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false)
     private UUID id;
 
+    @Column(nullable = false)
     private UUID userId;
 
     @OneToMany

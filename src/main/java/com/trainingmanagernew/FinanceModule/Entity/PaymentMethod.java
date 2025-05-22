@@ -4,6 +4,7 @@ public enum PaymentMethod {
     DAILY,
     MONTHLY,
     CUSTOM,
-    YEARLY
+    YEARLY,
+    WEEKLY
 }
 

@@ -10,7 +10,7 @@ public class PaymentPostDto {
 
     private BigDecimal payment;
 
-    private String modalidade;
+    private String paymentMode;
 
     private UUID customerId;
 
@@ -18,9 +18,9 @@ public class PaymentPostDto {
 
     private LocalDate dueDate;
 
-    private boolean payed;
-
     private UUID optionalPaymentEntityId;
+
+
 
     public UUID getOptionalPaymentEntityId() {
         return optionalPaymentEntityId;
@@ -28,6 +28,14 @@ public class PaymentPostDto {
 
     public void setOptionalPaymentEntityId(UUID optionalPaymentEntityId) {
         this.optionalPaymentEntityId = optionalPaymentEntityId;
+    }
+
+    public String getPaymentMode() {
+        return paymentMode;
+    }
+
+    public void setPaymentMode(String paymentMode) {
+        this.paymentMode = paymentMode;
     }
 
     public UUID getPaymentOwnerEntityId() {
@@ -44,14 +52,6 @@ public class PaymentPostDto {
 
     public void setPayment(BigDecimal payment) {
         this.payment = payment;
-    }
-
-    public String getModalidade() {
-        return modalidade;
-    }
-
-    public void setModalidade(String modalidade) {
-        this.modalidade = modalidade;
     }
 
     public UUID getCustomerId() {
@@ -76,13 +76,5 @@ public class PaymentPostDto {
 
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
-    }
-
-    public boolean isPayed() {
-        return payed;
-    }
-
-    public void setPayed(boolean payed) {
-        this.payed = payed;
     }
 }

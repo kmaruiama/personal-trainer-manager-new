@@ -21,25 +21,25 @@ class RegisterDtoTest {
     void testUsernameValidation() {
         RegisterDto registerDto = new RegisterDto();
 
-        // @NotNull
+        //notNull
         registerDto.setUsername(null);
         Set<ConstraintViolation<RegisterDto>> violations = validator.validateProperty(registerDto, "username");
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("username")
                 && v.getConstraintDescriptor().getAnnotation().annotationType().equals(jakarta.validation.constraints.NotNull.class)));
 
-        // @NotBlank
+        //notBlank
         registerDto.setUsername("");
         violations = validator.validateProperty(registerDto, "username");
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("username")
                 && v.getConstraintDescriptor().getAnnotation().annotationType().equals(jakarta.validation.constraints.NotBlank.class)));
 
-        // @Size (too small)
+        //size (too small)
         registerDto.setUsername("ab");
         violations = validator.validateProperty(registerDto, "username");
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("username")
                 && v.getConstraintDescriptor().getAnnotation().annotationType().equals(jakarta.validation.constraints.Size.class)));
 
-        // @Size (too big)
+        //size (too big)
         registerDto.setUsername("pqowierpowqierupqoweirupqwoierupowiqerpoqweirupowieqrupqowierupqwoeirupqweoiru");
         violations = validator.validateProperty(registerDto, "username");
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("username")
@@ -50,13 +50,13 @@ class RegisterDtoTest {
     void testPasswordValidation() {
         RegisterDto registerDto = new RegisterDto();
 
-        // @NotNull
+        //notNull
         registerDto.setPassword(null);
         Set<ConstraintViolation<RegisterDto>> violations = validator.validateProperty(registerDto, "password");
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("password")
                 && v.getConstraintDescriptor().getAnnotation().annotationType().equals(jakarta.validation.constraints.NotNull.class)));
 
-        // @NotBlank
+        //notBlank
         registerDto.setPassword("");
         violations = validator.validateProperty(registerDto, "password");
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("password")
@@ -67,13 +67,13 @@ class RegisterDtoTest {
     void testEmailValidation() {
         RegisterDto registerDto = new RegisterDto();
 
-        // @NotNull
+        //notNull
         registerDto.setEmail(null);
         Set<ConstraintViolation<RegisterDto>> violations = validator.validateProperty(registerDto, "email");
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("email")
                 && v.getConstraintDescriptor().getAnnotation().annotationType().equals(jakarta.validation.constraints.NotNull.class)));
 
-        // @NotBlank
+        //notBlank
         registerDto.setEmail("");
         violations = validator.validateProperty(registerDto, "email");
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("email")
@@ -84,19 +84,19 @@ class RegisterDtoTest {
     void testCpfValidation() {
         RegisterDto registerDto = new RegisterDto();
 
-        // @NotNull
+        //notNull
         registerDto.setCpf(null);
         Set<ConstraintViolation<RegisterDto>> violations = validator.validateProperty(registerDto, "cpf");
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("cpf")
                 && v.getConstraintDescriptor().getAnnotation().annotationType().equals(jakarta.validation.constraints.NotNull.class)));
 
-        // @NotBlank
+        //notBlank
         registerDto.setCpf("");
         violations = validator.validateProperty(registerDto, "cpf");
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("cpf")
                 && v.getConstraintDescriptor().getAnnotation().annotationType().equals(jakarta.validation.constraints.NotBlank.class)));
 
-        // @Pattern
+        //pattern
         registerDto.setCpf("12345678900");
         violations = validator.validateProperty(registerDto, "cpf");
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("cpf")

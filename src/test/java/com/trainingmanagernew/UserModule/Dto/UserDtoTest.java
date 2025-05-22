@@ -23,25 +23,25 @@ class UserDtoTest {
     @Test
     void testUsernameValidation(){
         UserDto userDto = new UserDto();
-        // @NotNull
+        //notNull
         userDto.setUsername(null);
         Set<ConstraintViolation<UserDto>> violations = validator.validateProperty(userDto, "username");
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("username")
                 && v.getConstraintDescriptor().getAnnotation().annotationType().equals(jakarta.validation.constraints.NotNull.class)));
 
-        // @NotBlank
+        //notBlank
         userDto.setUsername("");
         violations = validator.validateProperty(userDto, "username");
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("username")
                 && v.getConstraintDescriptor().getAnnotation().annotationType().equals(jakarta.validation.constraints.NotBlank.class)));
 
-        // @Size (too small)
+        //size (too small)
         userDto.setUsername("ab");
         violations = validator.validateProperty(userDto, "username");
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("username")
                 && v.getConstraintDescriptor().getAnnotation().annotationType().equals(jakarta.validation.constraints.Size.class)));
 
-        // @Size (too big)
+        //size (too big)
         userDto.setUsername("pqowierpowqierupqoweirupqwoierupowiqerpoqweirupowieqrupqowierupqwoeirupqweoiru");
         violations = validator.validateProperty(userDto, "username");
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("username")
@@ -54,18 +54,18 @@ class UserDtoTest {
         userDto.setEmail(null);
         Set<ConstraintViolation<UserDto>> violations = validator.validateProperty(userDto, "email");
 
-        // @NotNull
+        //notNull
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("email")
                 && v.getConstraintDescriptor().getAnnotation().annotationType().equals(jakarta.validation.constraints.NotNull.class)));
 
-        // @NotBlank
+        //notBlank
         userDto.setEmail("");
         violations = validator.validateProperty(userDto, "email");
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("email")
                 && v.getConstraintDescriptor().getAnnotation().annotationType().equals(jakarta.validation.constraints.NotBlank.class)));
 
 
-        // @Email
+        //email
         userDto.setEmail("blalbablablabla.com");
         violations = validator.validateProperty(userDto, "email");
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("email")
@@ -76,32 +76,32 @@ class UserDtoTest {
     void testPhoneValidation(){
         UserDto userDto = new UserDto();
 
-        // @NotNull
+        //notNull
         userDto.setNumber(null);
         Set<ConstraintViolation<UserDto>> violations = validator.validateProperty(userDto, "number");
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("number")
                 && v.getConstraintDescriptor().getAnnotation().annotationType().equals(jakarta.validation.constraints.NotNull.class)));
 
-        // @NotBlank
+        //notBlank
         userDto.setNumber("");
         violations = validator.validateProperty(userDto, "number");
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("number")
                 && v.getConstraintDescriptor().getAnnotation().annotationType().equals(jakarta.validation.constraints.NotBlank.class)));
 
 
-        // @Pattern (no letters allowed)
+        //pattern (no letters allowed)
         userDto.setNumber("edied");
         violations = validator.validateProperty(userDto, "number");
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("number")
                 && v.getConstraintDescriptor().getAnnotation().annotationType().equals(jakarta.validation.constraints.Pattern.class)));
 
-        // @Size (minimum of 10)
+        //size (minimum of 10)
         userDto.setNumber("1");
         violations = validator.validateProperty(userDto, "number");
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("number")
                 && v.getConstraintDescriptor().getAnnotation().annotationType().equals(jakarta.validation.constraints.Size.class)));
 
-        // @Size (maximum of 15)
+        //size (maximum of 15)
         userDto.setNumber("4567865434567765434567654345671");
         violations = validator.validateProperty(userDto, "number");
         assertTrue(violations.stream().anyMatch(v -> v.getPropertyPath().toString().equals("number")
