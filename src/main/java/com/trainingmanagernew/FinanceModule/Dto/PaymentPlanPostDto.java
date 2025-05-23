@@ -1,50 +1,62 @@
-package com.trainingmanagernew.FinanceModule.Entity;
+package com.trainingmanagernew.FinanceModule.Dto;
 
+import com.trainingmanagernew.FinanceModule.Entity.PaymentMethod;
+import com.trainingmanagernew.FinanceModule.Entity.PaymentOwnerEntity;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Entity
-public class PaymentPlanEntity {
-    @Id
-    @GeneratedValue
-    @Column(nullable = false)
-    private UUID id;
+//anotar os validators do jakarta aki dpsss
+public class PaymentPlanPostDto {
+    private UUID optionalPaymentPlanEntityId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private PaymentMethod paymentMode;
+    @NotNull
+    @NotBlank
+    private String paymentMode;
 
-    @Column(nullable = false)
+    @NotNull
     private LocalDate startDate;
 
-    @Column(nullable = false)
+    @NotNull
+    @Min(1)
+    @Max(31)
     private Integer paymentDay;
 
+    @NotNull
     private LocalDate endDate;
 
-    @Column(precision = 10, scale = 2, nullable = false)
+    @Min(0)
+    @NotNull
     private BigDecimal recurringAmount;
 
-    @Column(nullable = false)
+    @NotNull
     private UUID customerId;
 
-    @ManyToOne(optional = false)
-    private PaymentOwnerEntity paymentOwnerEntity;
+    @NotNull
+    private UUID paymentOwnerEntityId;
 
     private String description;
 
-    public UUID getId() {
-        return id;
+    public UUID getOptionalPaymentPlanEntityId() {
+        return optionalPaymentPlanEntityId;
     }
 
-    public PaymentMethod getPaymentMode() {
+    public void setOptionalPaymentPlanEntityId(UUID optionalPaymentPlanEntityId) {
+        this.optionalPaymentPlanEntityId = optionalPaymentPlanEntityId;
+    }
+
+    public String getPaymentMode() {
         return paymentMode;
     }
 
-    public void setPaymentMode(PaymentMethod paymentMode) {
+    public void setPaymentMode(String paymentMode) {
         this.paymentMode = paymentMode;
     }
 
@@ -88,12 +100,12 @@ public class PaymentPlanEntity {
         this.customerId = customerId;
     }
 
-    public PaymentOwnerEntity getPaymentOwnerEntity() {
-        return paymentOwnerEntity;
+    public UUID getPaymentOwnerEntityId() {
+        return paymentOwnerEntityId;
     }
 
-    public void setPaymentOwnerEntity(PaymentOwnerEntity paymentOwnerEntity) {
-        this.paymentOwnerEntity = paymentOwnerEntity;
+    public void setPaymentOwnerEntityId(UUID paymentOwnerEntityId) {
+        this.paymentOwnerEntityId = paymentOwnerEntityId;
     }
 
     public String getDescription() {

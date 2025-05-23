@@ -27,9 +27,11 @@ public class PaymentEntity {
 
     private String description;
 
+    //aqui por possíveis pagamentos avulsos
     @Column(nullable = false)
     private UUID customerId;
 
+    //aqui por possíveis pagamentos avulsos
     @ManyToOne(optional = false)
     private PaymentOwnerEntity paymentOwnerEntity;
 }
