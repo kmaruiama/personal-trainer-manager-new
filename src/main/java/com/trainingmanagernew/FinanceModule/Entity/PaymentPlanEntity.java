@@ -25,6 +25,8 @@ public class PaymentPlanEntity {
 
     private LocalDate endDate;
 
+    private Integer customIntervalOfDays;
+
     @Column(precision = 10, scale = 2, nullable = false)
     private BigDecimal recurringAmount;
 
@@ -102,5 +104,13 @@ public class PaymentPlanEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getCustomIntervalOfDays() {
+        return customIntervalOfDays;
+    }
+
+    public void setCustomIntervalOfDays(Integer customIntervalOfDays) {
+        this.customIntervalOfDays = customIntervalOfDays;
     }
 }

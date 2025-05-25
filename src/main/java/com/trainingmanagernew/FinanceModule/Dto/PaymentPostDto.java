@@ -1,51 +1,45 @@
-package com.trainingmanagernew.FinanceModule.Entity;
+package com.trainingmanagernew.FinanceModule.Dto;
 
-import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Entity
-public class PaymentEntity {
-    @Id
-    @GeneratedValue
-    private UUID id;
+public class PaymentPostDto {
+    private UUID optionalPaymentEntityId;
 
-    @ManyToOne
-    private PaymentPlanEntity paymentPlanEntity;
-
-    @Column(nullable = false, precision = 10, scale = 2)
+    @NotNull
+    @Min(0)
     private BigDecimal amount;
 
-    private LocalDate dueDate;
-
-    @Column(nullable = false)
+    @NotNull
     private LocalDate paymentDate;
 
-    @Column(nullable = false)
+    @NotNull
     private boolean payed;
 
+    //se nao foi pago, adicionar duedate para lembrar ao profissional dps
+    private LocalDate dueDate;
+
+    @NotBlank
     private String description;
 
-    //aqui por possíveis pagamentos avulsos
-    @Column(nullable = false)
+    //pode ser null pq imagino que pagamentos avulsos vao ser usados majoritariamente para
+    //clientes nao cadastrados
     private UUID customerId;
 
-    //aqui por possíveis pagamentos avulsos
-    @ManyToOne(optional = false)
-    private PaymentOwnerEntity paymentOwnerEntity;
+    @NotNull
+    private UUID paymentOwnerEntityId;
 
-    public UUID getId() {
-        return id;
+    public UUID getOptionalPaymentEntityId() {
+        return optionalPaymentEntityId;
     }
 
-    public PaymentPlanEntity getPaymentPlanEntity() {
-        return paymentPlanEntity;
-    }
-
-    public void setPaymentPlanEntity(PaymentPlanEntity paymentPlanEntity) {
-        this.paymentPlanEntity = paymentPlanEntity;
+    public void setOptionalPaymentEntityId(UUID optionalPaymentEntityId) {
+        this.optionalPaymentEntityId = optionalPaymentEntityId;
     }
 
     public BigDecimal getAmount() {
@@ -96,11 +90,11 @@ public class PaymentEntity {
         this.customerId = customerId;
     }
 
-    public PaymentOwnerEntity getPaymentOwnerEntity() {
-        return paymentOwnerEntity;
+    public UUID getPaymentOwnerEntityId() {
+        return paymentOwnerEntityId;
     }
 
-    public void setPaymentOwnerEntity(PaymentOwnerEntity paymentOwnerEntity) {
-        this.paymentOwnerEntity = paymentOwnerEntity;
+    public void setPaymentOwnerEntityId(UUID paymentOwnerEntityId) {
+        this.paymentOwnerEntityId = paymentOwnerEntityId;
     }
 }

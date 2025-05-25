@@ -1,6 +1,8 @@
 package com.trainingmanagernew.FinanceModule.Service.PaymentPlanEntity.Post;
 
 import com.trainingmanagernew.FinanceModule.Dto.PaymentPlanPostDto;
+import com.trainingmanagernew.FinanceModule.Dto.PaymentPostDto;
+import com.trainingmanagernew.FinanceModule.Entity.PaymentEntity;
 import com.trainingmanagernew.FinanceModule.Entity.PaymentMethod;
 import com.trainingmanagernew.FinanceModule.Entity.PaymentOwnerEntity;
 import com.trainingmanagernew.FinanceModule.Entity.PaymentPlanEntity;
@@ -27,15 +29,28 @@ public class AddNewPaymentPlanServiceImpl implements AddNewPaymentPlanService {
     @Override
     public void add(PaymentPlanPostDto paymentPlanPostDto) {
         PaymentPlanEntity paymentPlanEntity = new PaymentPlanEntity();
-        paymentPlanEntity.setPaymentDay(paymentPlanPostDto.getPaymentDay());
-        paymentPlanEntity.setDescription(paymentPlanPostDto.getDescription());
+
+        //obrigatórios
         paymentPlanEntity.setStartDate(paymentPlanPostDto.getStartDate());
         paymentPlanEntity.setRecurringAmount(paymentPlanPostDto.getRecurringAmount());
-        setPaymentOwnerEntity(paymentPlanEntity, paymentPlanPostDto.getPaymentOwnerEntityId());
-        setPaymentMethod(paymentPlanEntity, paymentPlanPostDto.getPaymentMode());
+        //opcionais
         if (paymentPlanPostDto.getEndDate() != null){
             paymentPlanEntity.setEndDate(paymentPlanPostDto.getEndDate());
         }
+        if (paymentPlanPostDto.getDescription() != null){
+            paymentPlanEntity.setDescription(paymentPlanEntity.getDescription());
+        }
+
+        setPaymentOwnerEntity(paymentPlanEntity, paymentPlanPostDto.getPaymentOwnerEntityId());
+        setPaymentMode(paymentPlanEntity, paymentPlanPostDto.getPaymentMode());
+
+        //se custom, a data da cobrança será sempre a data de inicio + intervalo de dias escolhido.
+        //ficaria complexo demais e acredito que inútil pra 99.9% dos casos deixar escolher o dia nesse modo
+        if (paymentPlanEntity.getPaymentMode().equals(PaymentMethod.CUSTOM)){
+            paymentPlanEntity.setCustomIntervalOfDays(paymentPlanPostDto.getCustomIntervalOfDays());
+        }
+
+        checkInconsistencies(paymentPlanEntity);
         paymentPlanEntityRepository.save(paymentPlanEntity);
     }
 
@@ -49,11 +64,8 @@ public class AddNewPaymentPlanServiceImpl implements AddNewPaymentPlanService {
         }
     }
 
-    private void setPaymentMethod(PaymentPlanEntity paymentPlanEntity, String paymentMode){
+    private void setPaymentMode(PaymentPlanEntity paymentPlanEntity, String paymentMode){
         switch (paymentMode){
-            case "DAILY":
-                paymentPlanEntity.setPaymentMode(PaymentMethod.DAILY);
-                break;
             case "WEEKLY":
                 paymentPlanEntity.setPaymentMode(PaymentMethod.WEEKLY);
                 break;
@@ -68,4 +80,17 @@ public class AddNewPaymentPlanServiceImpl implements AddNewPaymentPlanService {
                 break;
         }
     }
+
+    private void checkInconsistencies(PaymentPlanEntity paymentPlanEntity) {
+        PaymentMethod mode = paymentPlanEntity.getPaymentMode();
+        Integer paymentDay = paymentPlanEntity.getPaymentDay();
+
+        if (paymentDay != null && !(mode == PaymentMethod.WEEKLY || mode == PaymentMethod.MONTHLY)) {
+            throw new FinanceCustomExceptions.IrregularPaymentPlanPostDtoException();
+        }
+        if (mode == PaymentMethod.WEEKLY && paymentDay != null && paymentDay > 7) {
+            throw new FinanceCustomExceptions.IrregularPaymentPlanPostDtoException();
+        }
+    }
+
 }

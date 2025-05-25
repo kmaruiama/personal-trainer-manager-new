@@ -12,4 +12,9 @@ public class FinanceCustomExceptions {
     public static class IrregularPaymentPostDtoException extends RuntimeException{
         public IrregularPaymentPostDtoException() {super("Forma de pagamento irregular");}
     }
+
+    public static class IrregularPaymentPlanPostDtoException extends RuntimeException{
+        public IrregularPaymentPlanPostDtoException() {super("Forma de pagamento irregular");}
+    }
+
 }

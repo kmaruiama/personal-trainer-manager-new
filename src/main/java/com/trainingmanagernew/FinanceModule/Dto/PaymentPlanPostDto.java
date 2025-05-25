@@ -42,6 +42,8 @@ public class PaymentPlanPostDto {
     @NotNull
     private UUID paymentOwnerEntityId;
 
+    private Integer customIntervalOfDays;
+
     private String description;
 
     public UUID getOptionalPaymentPlanEntityId() {
@@ -114,5 +116,13 @@ public class PaymentPlanPostDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getCustomIntervalOfDays() {
+        return customIntervalOfDays;
+    }
+
+    public void setCustomIntervalOfDays(Integer customIntervalOfDays) {
+        this.customIntervalOfDays = customIntervalOfDays;
     }
 }
