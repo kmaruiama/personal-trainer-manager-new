@@ -46,6 +46,8 @@ public class PaymentPlanPostDto {
 
     private String description;
 
+    private Boolean createOlderPayments;
+
     public UUID getOptionalPaymentPlanEntityId() {
         return optionalPaymentPlanEntityId;
     }
@@ -124,5 +126,13 @@ public class PaymentPlanPostDto {
 
     public void setCustomIntervalOfDays(Integer customIntervalOfDays) {
         this.customIntervalOfDays = customIntervalOfDays;
+    }
+
+    public Boolean getCreateOlderPayments() {
+        return createOlderPayments;
+    }
+
+    public void setCreateOlderPayments(Boolean createOlderPayments) {
+        this.createOlderPayments = createOlderPayments;
     }
 }

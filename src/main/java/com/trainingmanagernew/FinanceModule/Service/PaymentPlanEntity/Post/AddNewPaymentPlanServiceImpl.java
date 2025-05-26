@@ -1,8 +1,6 @@
 package com.trainingmanagernew.FinanceModule.Service.PaymentPlanEntity.Post;
 
 import com.trainingmanagernew.FinanceModule.Dto.PaymentPlanPostDto;
-import com.trainingmanagernew.FinanceModule.Dto.PaymentPostDto;
-import com.trainingmanagernew.FinanceModule.Entity.PaymentEntity;
 import com.trainingmanagernew.FinanceModule.Entity.PaymentMethod;
 import com.trainingmanagernew.FinanceModule.Entity.PaymentOwnerEntity;
 import com.trainingmanagernew.FinanceModule.Entity.PaymentPlanEntity;
@@ -12,6 +10,7 @@ import com.trainingmanagernew.FinanceModule.Repository.PaymentPlanEntityReposito
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -31,6 +30,8 @@ public class AddNewPaymentPlanServiceImpl implements AddNewPaymentPlanService {
         PaymentPlanEntity paymentPlanEntity = new PaymentPlanEntity();
 
         //obrigatórios
+        check29Feb(paymentPlanPostDto);
+
         paymentPlanEntity.setStartDate(paymentPlanPostDto.getStartDate());
         paymentPlanEntity.setRecurringAmount(paymentPlanPostDto.getRecurringAmount());
         //opcionais
@@ -42,11 +43,11 @@ public class AddNewPaymentPlanServiceImpl implements AddNewPaymentPlanService {
         }
 
         setPaymentOwnerEntity(paymentPlanEntity, paymentPlanPostDto.getPaymentOwnerEntityId());
-        setPaymentMode(paymentPlanEntity, paymentPlanPostDto.getPaymentMode());
+        setPaymentMethod(paymentPlanEntity, paymentPlanPostDto.getPaymentMode());
 
         //se custom, a data da cobrança será sempre a data de inicio + intervalo de dias escolhido.
         //ficaria complexo demais e acredito que inútil pra 99.9% dos casos deixar escolher o dia nesse modo
-        if (paymentPlanEntity.getPaymentMode().equals(PaymentMethod.CUSTOM)){
+        if (paymentPlanEntity.getPaymentMethod().equals(PaymentMethod.CUSTOM)){
             paymentPlanEntity.setCustomIntervalOfDays(paymentPlanPostDto.getCustomIntervalOfDays());
         }
 
@@ -64,33 +65,38 @@ public class AddNewPaymentPlanServiceImpl implements AddNewPaymentPlanService {
         }
     }
 
-    private void setPaymentMode(PaymentPlanEntity paymentPlanEntity, String paymentMode){
-        switch (paymentMode){
+    private void setPaymentMethod(PaymentPlanEntity paymentPlanEntity, String paymentMethod){
+        switch (paymentMethod){
             case "WEEKLY":
-                paymentPlanEntity.setPaymentMode(PaymentMethod.WEEKLY);
+                paymentPlanEntity.setPaymentMethod(PaymentMethod.WEEKLY);
                 break;
             case "MONTHLY":
-                paymentPlanEntity.setPaymentMode(PaymentMethod.MONTHLY);
+                paymentPlanEntity.setPaymentMethod(PaymentMethod.MONTHLY);
                 break;
             case "YEARLY":
-                paymentPlanEntity.setPaymentMode(PaymentMethod.YEARLY);
+                paymentPlanEntity.setPaymentMethod(PaymentMethod.YEARLY);
                 break;
             case "CUSTOM":
-                paymentPlanEntity.setPaymentMode(PaymentMethod.CUSTOM);
+                paymentPlanEntity.setPaymentMethod(PaymentMethod.CUSTOM);
                 break;
         }
     }
 
     private void checkInconsistencies(PaymentPlanEntity paymentPlanEntity) {
-        PaymentMethod mode = paymentPlanEntity.getPaymentMode();
+        PaymentMethod method = paymentPlanEntity.getPaymentMethod();
         Integer paymentDay = paymentPlanEntity.getPaymentDay();
 
-        if (paymentDay != null && !(mode == PaymentMethod.WEEKLY || mode == PaymentMethod.MONTHLY)) {
+        if (paymentDay != null && !(method == PaymentMethod.WEEKLY || method == PaymentMethod.MONTHLY)) {
             throw new FinanceCustomExceptions.IrregularPaymentPlanPostDtoException();
         }
-        if (mode == PaymentMethod.WEEKLY && paymentDay != null && paymentDay > 7) {
+        if (method == PaymentMethod.WEEKLY && paymentDay != null && paymentDay > 7) {
             throw new FinanceCustomExceptions.IrregularPaymentPlanPostDtoException();
         }
     }
-
+    private void check29Feb(PaymentPlanPostDto paymentPlanPostDto) {
+        if (paymentPlanPostDto.getStartDate().getMonth().getValue() == 2
+        && paymentPlanPostDto.getStartDate().getDayOfMonth() == 29) {
+            paymentPlanPostDto.setStartDate(paymentPlanPostDto.getStartDate().plusDays(1));
+        }
+    }
 }

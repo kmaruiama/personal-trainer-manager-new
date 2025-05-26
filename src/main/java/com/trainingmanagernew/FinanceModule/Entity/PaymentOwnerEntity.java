@@ -19,6 +19,9 @@ public class PaymentOwnerEntity{
     @OneToMany
     private List<PaymentEntity> paymentEntityList = new ArrayList<>();
 
+    @OneToMany
+    private List<PaymentPlanEntity> paymentPlanEntityList = new ArrayList<>();
+
     public UUID getId() {
         return id;
     }
@@ -41,5 +44,13 @@ public class PaymentOwnerEntity{
 
     public void setPaymentEntityList(List<PaymentEntity> paymentEntityList) {
         this.paymentEntityList = paymentEntityList;
+    }
+
+    public List<PaymentPlanEntity> getPaymentPlanEntityList() {
+        return paymentPlanEntityList;
+    }
+
+    public void setPaymentPlanEntityList(List<PaymentPlanEntity> paymentPlanEntityList) {
+        this.paymentPlanEntityList = paymentPlanEntityList;
     }
 }

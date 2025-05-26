@@ -15,7 +15,7 @@ public class PaymentPlanEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private PaymentMethod paymentMode;
+    private PaymentMethod paymentMethod;
 
     @Column(nullable = false)
     private LocalDate startDate;
@@ -42,12 +42,12 @@ public class PaymentPlanEntity {
         return id;
     }
 
-    public PaymentMethod getPaymentMode() {
-        return paymentMode;
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
     }
 
-    public void setPaymentMode(PaymentMethod paymentMode) {
-        this.paymentMode = paymentMode;
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 
     public LocalDate getStartDate() {
