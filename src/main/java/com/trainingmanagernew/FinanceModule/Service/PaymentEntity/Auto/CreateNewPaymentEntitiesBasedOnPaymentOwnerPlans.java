@@ -6,6 +6,8 @@ import com.trainingmanagernew.FinanceModule.Entity.PaymentOwnerEntity;
 import com.trainingmanagernew.FinanceModule.Entity.PaymentPlanEntity;
 import com.trainingmanagernew.FinanceModule.Repository.PaymentEntityRepository;
 import com.trainingmanagernew.FinanceModule.Repository.PaymentOwnerEntityRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -14,6 +16,8 @@ import java.util.List;
 
 
 //esse serviço apenas cria novos pagamentos
+//acho que no futuro seria interessante dividir varias tabelas (uma pra cada tipo de plano)
+//pq ler todos os n rows da tabela de planos todos os dias me parece ineficiente
 @Service
 public class CreateNewPaymentEntitiesBasedOnPaymentOwnerPlans {
     private final PaymentOwnerEntityRepository paymentOwnerEntityRepository;
@@ -25,6 +29,8 @@ public class CreateNewPaymentEntitiesBasedOnPaymentOwnerPlans {
         this.paymentEntityRepository = paymentEntityRepository;
     }
 
+    @Transactional
+    @Scheduled(cron = "0 0 1 * * *")
     public void create () {
         List<PaymentOwnerEntity> paymentOwnerEntityList = paymentOwnerEntityRepository.findAllWithPlans();
         for (int i = 0; i < paymentOwnerEntityList.size(); i++){
@@ -60,13 +66,39 @@ public class CreateNewPaymentEntitiesBasedOnPaymentOwnerPlans {
                 }
             }
             case MONTHLY -> {
-                if (paymentPlanEntity.getPaymentDay() == LocalDate.now().getDayOfMonth()) {
+                int paymentDay = paymentPlanEntity.getPaymentDay();
+                LocalDate today = LocalDate.now();
+                int todayDay = today.getDayOfMonth();
+                int lastDayOfMonth = today.lengthOfMonth();
+
+                boolean isTodayPaymentDay = (paymentDay == todayDay); // hoje é o dia de pagamento
+                boolean isTodayLastDay = (todayDay == lastDayOfMonth); // hoje é o último dia do mês
+                boolean isPaymentDayBeyondMonth = paymentDay > lastDayOfMonth; // dia do pagamento passa do span do mes
+                                                                               // ex: dia de pagamento = 31 mas o mes só tem 30 dias
+
+                boolean isPaymentDayAdjusted = isPaymentDayBeyondMonth && isTodayLastDay;
+                //se o dia do pagamento é 31 e hoje é 30, e 30 é o ultimo dia e todos os casos semelhantes
+
+                if (isTodayPaymentDay || isPaymentDayAdjusted) {
                     paymentEntity = new PaymentEntity();
-                    LocalDate dueDate = LocalDate.now().plusMonths(1);
+
+                    LocalDate nextMonth = today.plusMonths(1);
+                    int lengthOfNextMonth = nextMonth.lengthOfMonth();
+                    //se vence no dia 31 e o mês só tem 28 dias o vencimento é no dia 28
+                    int dayToPay = Math.min(paymentDay, lengthOfNextMonth);
+                    LocalDate dueDate = nextMonth.withDayOfMonth(dayToPay);
+
                     paymentEntity.setDueDate(dueDate);
+
+
+                    LocalDate startPeriod = dueDate.minusMonths(1);
+                    int lengthOfStartPeriod = startPeriod.lengthOfMonth();
+                    int startDay = Math.min(paymentDay, lengthOfStartPeriod);
+                    startPeriod = startPeriod.withDayOfMonth(startDay);
+
                     paymentEntity.setDescription(
                             "Pagamento referente ao mês do dia " +
-                                    dueDate.minusMonths(1) +
+                                    startPeriod +
                                     " até o dia " +
                                     dueDate +
                                     "."
@@ -74,9 +106,7 @@ public class CreateNewPaymentEntitiesBasedOnPaymentOwnerPlans {
                 }
             }
             case YEARLY -> {
-                LocalDate hoje = LocalDate.now();
-                LocalDate comparado = paymentPlanEntity.getStartDate();
-                if (hoje.getMonth() == comparado.getMonth() && hoje.getDayOfMonth() == comparado.getDayOfMonth()) {
+                if (LocalDate.now().getDayOfYear() == paymentPlanEntity.getPaymentDay()) {
                     paymentEntity = new PaymentEntity();
                     LocalDate dueDate = LocalDate.now().plusYears(1);
                     paymentEntity.setDueDate(dueDate);
@@ -113,7 +143,7 @@ public class CreateNewPaymentEntitiesBasedOnPaymentOwnerPlans {
             paymentEntity.setPaymentPlanEntity(paymentPlanEntity);
             paymentEntity.setCustomerId(paymentPlanEntity.getCustomerId());
             paymentEntity.setPaymentOwnerEntity(paymentPlanEntity.getPaymentOwnerEntity());
-            paymentEntity = paymentEntityRepository.save(paymentEntity);
+            paymentEntityRepository.save(paymentEntity);
         }
     }
 }

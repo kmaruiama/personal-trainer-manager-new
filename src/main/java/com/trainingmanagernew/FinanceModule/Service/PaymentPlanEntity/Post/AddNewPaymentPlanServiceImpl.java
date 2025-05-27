@@ -7,10 +7,10 @@ import com.trainingmanagernew.FinanceModule.Entity.PaymentPlanEntity;
 import com.trainingmanagernew.FinanceModule.Exception.FinanceCustomExceptions;
 import com.trainingmanagernew.FinanceModule.Repository.PaymentOwnerEntityRepository;
 import com.trainingmanagernew.FinanceModule.Repository.PaymentPlanEntityRepository;
+import com.trainingmanagernew.FinanceModule.Service.PaymentEntity.Auto.CreateOlderPayments;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -18,10 +18,12 @@ import java.util.UUID;
 public class AddNewPaymentPlanServiceImpl implements AddNewPaymentPlanService {
     private final PaymentOwnerEntityRepository paymentOwnerEntityRepository;
     private final PaymentPlanEntityRepository paymentPlanEntityRepository;
+    private final CreateOlderPayments createOlderPayments;
 
-    public AddNewPaymentPlanServiceImpl(PaymentOwnerEntityRepository paymentOwnerEntityRepository, PaymentPlanEntityRepository paymentPlanEntityRepository) {
+    public AddNewPaymentPlanServiceImpl(PaymentOwnerEntityRepository paymentOwnerEntityRepository, PaymentPlanEntityRepository paymentPlanEntityRepository, CreateOlderPayments createOlderPayments) {
         this.paymentOwnerEntityRepository = paymentOwnerEntityRepository;
         this.paymentPlanEntityRepository = paymentPlanEntityRepository;
+        this.createOlderPayments = createOlderPayments;
     }
 
     @Transactional
@@ -30,8 +32,6 @@ public class AddNewPaymentPlanServiceImpl implements AddNewPaymentPlanService {
         PaymentPlanEntity paymentPlanEntity = new PaymentPlanEntity();
 
         //obrigatórios
-        check29Feb(paymentPlanPostDto);
-
         paymentPlanEntity.setStartDate(paymentPlanPostDto.getStartDate());
         paymentPlanEntity.setRecurringAmount(paymentPlanPostDto.getRecurringAmount());
         //opcionais
@@ -52,7 +52,8 @@ public class AddNewPaymentPlanServiceImpl implements AddNewPaymentPlanService {
         }
 
         checkInconsistencies(paymentPlanEntity);
-        paymentPlanEntityRepository.save(paymentPlanEntity);
+        paymentPlanEntity = paymentPlanEntityRepository.save(paymentPlanEntity);
+        createOlderPayments.create(paymentPlanEntity);
     }
 
     private void setPaymentOwnerEntity(PaymentPlanEntity paymentPlanEntity, UUID id){
@@ -86,17 +87,15 @@ public class AddNewPaymentPlanServiceImpl implements AddNewPaymentPlanService {
         PaymentMethod method = paymentPlanEntity.getPaymentMethod();
         Integer paymentDay = paymentPlanEntity.getPaymentDay();
 
-        if (paymentDay != null && !(method == PaymentMethod.WEEKLY || method == PaymentMethod.MONTHLY)) {
+        //dava pra deixar tudo no mesmo mas ia ficar horrivel
+        if (paymentDay != null && method == PaymentMethod.CUSTOM) {
             throw new FinanceCustomExceptions.IrregularPaymentPlanPostDtoException();
         }
         if (method == PaymentMethod.WEEKLY && paymentDay != null && paymentDay > 7) {
             throw new FinanceCustomExceptions.IrregularPaymentPlanPostDtoException();
         }
-    }
-    private void check29Feb(PaymentPlanPostDto paymentPlanPostDto) {
-        if (paymentPlanPostDto.getStartDate().getMonth().getValue() == 2
-        && paymentPlanPostDto.getStartDate().getDayOfMonth() == 29) {
-            paymentPlanPostDto.setStartDate(paymentPlanPostDto.getStartDate().plusDays(1));
+        if (method == PaymentMethod.MONTHLY && paymentDay != null && paymentDay > 31){
+            throw new FinanceCustomExceptions.IrregularPaymentPlanPostDtoException();
         }
     }
 }

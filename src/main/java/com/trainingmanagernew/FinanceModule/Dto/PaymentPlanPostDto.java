@@ -26,7 +26,7 @@ public class PaymentPlanPostDto {
 
     @NotNull
     @Min(1)
-    @Max(31)
+    @Max(365)
     private Integer paymentDay;
 
     @NotNull

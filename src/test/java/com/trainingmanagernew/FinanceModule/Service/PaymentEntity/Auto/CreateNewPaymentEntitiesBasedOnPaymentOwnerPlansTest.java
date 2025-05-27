@@ -115,7 +115,7 @@ class CreateNewPaymentEntitiesBasedOnPaymentOwnerPlansTest {
 
     @Test
     void shouldCreateCorrectPaymentEntity_Yearly(){
-        LocalDate fixedNow = LocalDate.of(2025, 7, 30);
+        LocalDate fixedNow = LocalDate.of(2025, 8, 6);
 
         try (MockedStatic<LocalDate> mockedLocalDate = mockStatic(LocalDate.class, CALLS_REAL_METHODS)) {
             mockedLocalDate.when(LocalDate::now)
@@ -128,7 +128,46 @@ class CreateNewPaymentEntitiesBasedOnPaymentOwnerPlansTest {
             paymentPlanEntity.setPaymentOwnerEntity(paymentOwnerEntity);
             paymentPlanEntity.setCustomerId(randomCustomerEntityId);
             paymentPlanEntity.setPaymentMethod(PaymentMethod.YEARLY);
-            paymentPlanEntity.setRecurringAmount(BigDecimal.valueOf(240.00));
+            paymentPlanEntity.setRecurringAmount(BigDecimal.valueOf(2400.00));
+            paymentPlanEntity.setStartDate(LocalDate.of(2025, 7, 30));
+            paymentPlanEntity.setPaymentDay(LocalDate.of(2025, 8, 6).getDayOfYear());
+
+            paymentOwnerEntity.setPaymentPlanEntityList(List.of(paymentPlanEntity));
+
+            when(paymentOwnerEntityRepository.findAllWithPlans())
+                    .thenReturn(List.of(paymentOwnerEntity));
+
+            ArgumentCaptor<PaymentEntity> captor = ArgumentCaptor.forClass(PaymentEntity.class);
+            when(paymentEntityRepository.save(captor.capture()))
+                    .thenAnswer(inv -> inv.getArgument(0));
+            assertDoesNotThrow(() -> createNewPaymentEntitiesBasedOnPaymentOwnerPlans.create());
+
+            PaymentEntity paymentEntity = captor.getValue();
+            assertNotNull(paymentEntity);
+
+            assertEquals(BigDecimal.valueOf(2400.00), paymentEntity.getAmount());
+            assertEquals(LocalDate.of(2026, 8, 6), paymentEntity.getDueDate());
+            verify(paymentEntityRepository).save(any(PaymentEntity.class));
+        }
+    }
+
+    @Test
+    void shouldCreateCorrectPaymentEntity_Custom(){
+        LocalDate fixedNow = LocalDate.of(2025, 8, 18);
+
+        try (MockedStatic<LocalDate> mockedLocalDate = mockStatic(LocalDate.class, CALLS_REAL_METHODS)) {
+            mockedLocalDate.when(LocalDate::now)
+                    .thenReturn(fixedNow);
+
+            UUID randomCustomerEntityId = UUID.randomUUID();
+
+            PaymentOwnerEntity paymentOwnerEntity = new PaymentOwnerEntity();
+            PaymentPlanEntity paymentPlanEntity = new PaymentPlanEntity();
+            paymentPlanEntity.setPaymentOwnerEntity(paymentOwnerEntity);
+            paymentPlanEntity.setCustomerId(randomCustomerEntityId);
+            paymentPlanEntity.setPaymentMethod(PaymentMethod.CUSTOM);
+            paymentPlanEntity.setCustomIntervalOfDays(19);
+            paymentPlanEntity.setRecurringAmount(BigDecimal.valueOf(130.00));
             paymentPlanEntity.setStartDate(LocalDate.of(2025, 7, 30));
             paymentPlanEntity.setPaymentDay(null);
 
@@ -145,8 +184,8 @@ class CreateNewPaymentEntitiesBasedOnPaymentOwnerPlansTest {
             PaymentEntity paymentEntity = captor.getValue();
             assertNotNull(paymentEntity);
 
-            assertEquals(BigDecimal.valueOf(240.00), paymentEntity.getAmount());
-            assertEquals(LocalDate.of(2026, 7, 30), paymentEntity.getDueDate());
+            assertEquals(BigDecimal.valueOf(130.00), paymentEntity.getAmount());
+            assertEquals(LocalDate.of(2025, 9, 6), paymentEntity.getDueDate());
             verify(paymentEntityRepository).save(any(PaymentEntity.class));
         }
     }
