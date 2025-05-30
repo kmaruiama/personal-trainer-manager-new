@@ -1,6 +1,6 @@
 package com.trainingmanagernew.FinanceModule.Service.PaymentEntity.Post;
 
-import com.trainingmanagernew.FinanceModule.Dto.PaymentPostDto;
+import com.trainingmanagernew.FinanceModule.Dto.PaymentEntity.PaymentPostDto;
 import com.trainingmanagernew.FinanceModule.Entity.PaymentEntity;
 import com.trainingmanagernew.FinanceModule.Entity.PaymentOwnerEntity;
 import com.trainingmanagernew.FinanceModule.Exception.FinanceCustomExceptions;

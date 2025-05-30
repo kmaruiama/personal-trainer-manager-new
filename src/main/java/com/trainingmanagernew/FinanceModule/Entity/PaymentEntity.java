@@ -18,9 +18,10 @@ public class PaymentEntity {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal amount;
 
+    @Column(nullable = false)
     private LocalDate dueDate;
 
-    @Column(nullable = false)
+    //data que foi pago de fato
     private LocalDate paymentDate;
 
     @Column(nullable = false)

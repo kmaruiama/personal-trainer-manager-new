@@ -1,4 +1,4 @@
-package com.trainingmanagernew.FinanceModule.Dto;
+package com.trainingmanagernew.FinanceModule.Dto.PaymentEntity;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
