@@ -1,17 +1,15 @@
-package com.trainingmanagernew.BodyModule.Service.LocalJwtExtractor;
+package com.trainingmanagernew.FinanceModule.Service.LocalJwtExtractor;
 
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import com.trainingmanagernew.BodyModule.Exception.BodyCustomExceptions;
-import com.trainingmanagernew.CustomerModule.Exception.CustomerCustomExceptions;
+import com.trainingmanagernew.FinanceModule.Exception.FinanceCustomExceptions;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.util.UUID;
 
 @Component
-public class BodyTokenExtractionMethodsImpl implements BodyTokenExtraction {
-
+public class FinanceTokenExtractionImpl implements FinanceTokenExtraction {
     public UUID extractUuid(String token) {
 
         if (token.startsWith("Bearer ")) {
@@ -25,10 +23,9 @@ public class BodyTokenExtractionMethodsImpl implements BodyTokenExtraction {
             JWTClaimsSet claimsSet = signedJWT.getJWTClaimsSet();
             uuidString = claimsSet.getStringClaim("uuid");
         } catch (ParseException e){
-            throw new BodyCustomExceptions.TokenParsingExceptionAtBodyModule();
+            throw new FinanceCustomExceptions.TokenParsingExceptionAtFinanceModule();
         }
 
         return UUID.fromString(uuidString);
     }
-
 }

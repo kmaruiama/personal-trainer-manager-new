@@ -16,6 +16,10 @@ public class BodyCustomExceptions {
     public static class UnauthorizedRequest extends RuntimeException{
         public UnauthorizedRequest(){ super("Recurso não disponível para esse usuário"); }
     }
+
+    public static class TokenParsingExceptionAtBodyModule extends RuntimeException{
+        public TokenParsingExceptionAtBodyModule(){ super ("Erro ao realizar o parsing do JWT"); }
+    }
     public static class NoCompatibleObjectFoundInInterceptedMethodArgument extends RuntimeException{
         public NoCompatibleObjectFoundInInterceptedMethodArgument(){
             super("Nenhum objeto compativel encontrado para validar a autorização do método");
